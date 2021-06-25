@@ -1,64 +1,45 @@
-package entity;
-import javax.persistence.*;
+package dto;
+
+import entity.ContactEntity;
+
 import java.sql.Timestamp;
-import java.time.Instant;
 
+public class ContactDto {
 
-@Entity
-@Table(name="contact")
-public class ContactEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private int id;
-
-    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
-
-    @Column(name = "middle_name", length = 50)
     private String middleName;
-
-    @Column(name = "data_birthday")
-    private Instant dataBirthday;
-
-    @Enumerated(EnumType.STRING)
+    private Timestamp dataBirthday;
     private String gender;
-
-    @Column(name = "citizenship", length = 50)
     private String citizenship;
-
-    @Enumerated(EnumType.STRING)
     private String maritalStatus;
-
-    @Column(name = "website", length = 50)
     private String website;
-
-    @Column(name = "email", length = 50)
     private String email;
-
-    @Column(name = "workplace", length = 100)
     private String workplace;
-
-    @Column(name = "country", length = 50)
     private String country;
-
-    @Column(name = "town", length = 50)
     private String town;
-
-    @Column(name = "house", length = 50)
     private String house;
-
-    @Column(name = "flat", length = 50)
     private String flat;
-
-    @Column(name = "index")
     private int index;
 
-
-    public ContactEntity() {
+    public ContactDto(ContactEntity contact) {
+        id = contact.getId();
+        firstName = contact.getFirstName();
+        lastName = contact.getLastName();
+        middleName=contact.getMiddleName();
+        dataBirthday=contact.getDataBirthday();
+        gender=contact.getGender();
+        citizenship=contact.getCitizenship();
+        maritalStatus=contact.getMaritalStatus();
+        website=contact.getWebsite();
+        email=contact.getEmail();
+        workplace=contact.getWorkplace();
+        country=contact.getCountry();
+        town=contact.getTown();
+        house=contact.getHouse();
+        flat=contact.getFlat();
+        index=contact.getIndex();
     }
 
     public int getId() {
@@ -187,5 +168,27 @@ public class ContactEntity {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactResponseDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", dataBirthday=" + dataBirthday +
+                ", gender='" + gender + '\'' +
+                ", citizenship='" + citizenship + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", website='" + website + '\'' +
+                ", email='" + email + '\'' +
+                ", workplace='" + workplace + '\'' +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", house='" + house + '\'' +
+                ", flat='" + flat + '\'' +
+                ", index=" + index +
+                '}';
     }
 }

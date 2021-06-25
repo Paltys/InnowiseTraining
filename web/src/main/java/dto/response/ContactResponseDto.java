@@ -1,65 +1,28 @@
-package entity;
-import javax.persistence.*;
+package dto.response;
+
 import java.sql.Timestamp;
-import java.time.Instant;
 
+public class ContactResponseDto {
 
-@Entity
-@Table(name="contact")
-public class ContactEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private int id;
-
-    @Column(name = "first_name", nullable = false, length = 50)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 50)
-    private String lastName;
-
-    @Column(name = "middle_name", length = 50)
-    private String middleName;
-
-    @Column(name = "data_birthday")
-    private Instant dataBirthday;
-
-    @Enumerated(EnumType.STRING)
-    private String gender;
-
-    @Column(name = "citizenship", length = 50)
-    private String citizenship;
-
-    @Enumerated(EnumType.STRING)
-    private String maritalStatus;
-
-    @Column(name = "website", length = 50)
-    private String website;
-
-    @Column(name = "email", length = 50)
-    private String email;
-
-    @Column(name = "workplace", length = 100)
-    private String workplace;
-
-    @Column(name = "country", length = 50)
-    private String country;
-
-    @Column(name = "town", length = 50)
-    private String town;
-
-    @Column(name = "house", length = 50)
-    private String house;
-
-    @Column(name = "flat", length = 50)
-    private String flat;
-
-    @Column(name = "index")
-    private int index;
-
-
-    public ContactEntity() {
+    public ContactResponseDto() {
     }
+
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private Timestamp dataBirthday;
+    private String gender;
+    private String citizenship;
+    private String maritalStatus;
+    private String website;
+    private String email;
+    private String workplace;
+    private String country;
+    private String town;
+    private String house;
+    private String flat;
+    private int index;
 
     public int getId() {
         return id;
@@ -187,5 +150,27 @@ public class ContactEntity {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactResponseDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", dataBirthday=" + dataBirthday +
+                ", gender='" + gender + '\'' +
+                ", citizenship='" + citizenship + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", website='" + website + '\'' +
+                ", email='" + email + '\'' +
+                ", workplace='" + workplace + '\'' +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", house='" + house + '\'' +
+                ", flat='" + flat + '\'' +
+                ", index=" + index +
+                '}';
     }
 }

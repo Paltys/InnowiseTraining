@@ -15,6 +15,7 @@ public class HibernateUtil {
         }
     }
 
+    @org.jetbrains.annotations.NotNull
     public static Session getSession(){
         Session session = sessionFactory.openSession();
         session.beginTransaction();

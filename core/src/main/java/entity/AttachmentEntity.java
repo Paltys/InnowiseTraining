@@ -3,6 +3,7 @@ package entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 
 @Entity
@@ -23,13 +24,13 @@ class AttachmentEntity {
     private String url;
 
     @Column(name = "load_date")
-    private Timestamp loadDate;
+    private Instant loadDate;
 
     @Column(name = "load_date")
-    private Timestamp updateDate;
+    private Instant updateDate;
 
     @Column(name = "load_date")
-    private Timestamp deleteDate;
+    private Instant deleteDate;
 
     @Column(name = "comment", length = 500)
     private String comment;
