@@ -2,10 +2,8 @@ package service.impl;
 
 import dao.ContactDao;
 import dto.ContactDto;
-import dto.response.ContactResponseDto;
 import entity.ContactEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import service.ContactService;
 
@@ -22,7 +20,9 @@ public class ContactServiceImpl implements ContactService {
  public List<ContactDto> getAllContact() {
 
         List<ContactEntity> contactList = contactDao.getAll();
+
         List<ContactDto> contactDtoList = new ArrayList();
+
         for(ContactEntity contact : contactList){
             ContactDto contactDto = new ContactDto(contact);
             contactDtoList.add(contactDto);

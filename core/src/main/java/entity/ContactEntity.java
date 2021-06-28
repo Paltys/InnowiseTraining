@@ -1,4 +1,6 @@
 package entity;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -24,14 +26,18 @@ public class ContactEntity {
     @Column(name = "data_birthday")
     private Instant dataBirthday;
 
+
+    @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private String gender;
+    private Gender gender;
 
     @Column(name = "citizenship", length = 50)
     private String citizenship;
 
+
+    @Column(name = "marital_status")
     @Enumerated(EnumType.STRING)
-    private String maritalStatus;
+    private Maritalstatus maritalStatus;
 
     @Column(name = "website", length = 50)
     private String website;
@@ -93,19 +99,19 @@ public class ContactEntity {
         this.middleName = middleName;
     }
 
-    public Timestamp getDataBirthday() {
+    public Instant getDataBirthday() {
         return dataBirthday;
     }
 
-    public void setDataBirthday(Timestamp dataBirthday) {
+    public void setDataBirthday(Instant dataBirthday) {
         this.dataBirthday = dataBirthday;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -117,11 +123,11 @@ public class ContactEntity {
         this.citizenship = citizenship;
     }
 
-    public String getMaritalStatus() {
+    public Maritalstatus getMaritalStatus() {
         return maritalStatus;
     }
 
-    public void setMaritalStatus(String maritalStatus) {
+    public void setMaritalStatus(Maritalstatus maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 

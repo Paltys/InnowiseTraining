@@ -3,6 +3,7 @@ package dto;
 import entity.ContactEntity;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 public class ContactDto {
 
@@ -10,7 +11,7 @@ public class ContactDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private Timestamp dataBirthday;
+    private Instant dataBirthday;
     private String gender;
     private String citizenship;
     private String maritalStatus;
@@ -29,9 +30,9 @@ public class ContactDto {
         lastName = contact.getLastName();
         middleName=contact.getMiddleName();
         dataBirthday=contact.getDataBirthday();
-        gender=contact.getGender();
+        gender=contact.getGender().toString();
         citizenship=contact.getCitizenship();
-        maritalStatus=contact.getMaritalStatus();
+        maritalStatus=contact.getMaritalStatus().toString();
         website=contact.getWebsite();
         email=contact.getEmail();
         workplace=contact.getWorkplace();
@@ -74,11 +75,11 @@ public class ContactDto {
         this.middleName = middleName;
     }
 
-    public Timestamp getDataBirthday() {
+    public Instant getDataBirthday() {
         return dataBirthday;
     }
 
-    public void setDataBirthday(Timestamp dataBirthday) {
+    public void setDataBirthday(Instant dataBirthday) {
         this.dataBirthday = dataBirthday;
     }
 

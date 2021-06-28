@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("controller")
+@ComponentScan({"controller","service","dao"})
 public class WebConfig implements WebMvcConfigurer {
 
 //    @Override
