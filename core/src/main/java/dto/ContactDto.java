@@ -2,8 +2,6 @@ package dto;
 
 import entity.ContactEntity;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 
 public class ContactDto {
 
@@ -11,7 +9,7 @@ public class ContactDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private Instant dataBirthday;
+    private String dataBirthday;
     private String gender;
     private String citizenship;
     private String maritalStatus;
@@ -28,19 +26,22 @@ public class ContactDto {
         id = contact.getId();
         firstName = contact.getFirstName();
         lastName = contact.getLastName();
-        middleName=contact.getMiddleName();
-        dataBirthday=contact.getDataBirthday();
-        gender=contact.getGender().toString();
-        citizenship=contact.getCitizenship();
-        maritalStatus=contact.getMaritalStatus().toString();
-        website=contact.getWebsite();
-        email=contact.getEmail();
-        workplace=contact.getWorkplace();
-        country=contact.getCountry();
-        town=contact.getTown();
-        house=contact.getHouse();
-        flat=contact.getFlat();
-        index=contact.getIndex();
+        middleName = contact.getMiddleName();
+        dataBirthday = contact.getDataBirthday().toString();
+        gender = contact.getGender().toString();
+        citizenship = contact.getCitizenship();
+        maritalStatus = contact.getMaritalStatus().toString();
+        website = contact.getWebsite();
+        email = contact.getEmail();
+        workplace = contact.getWorkplace();
+        country = contact.getCountry();
+        town = contact.getTown();
+        house = contact.getHouse();
+        flat = contact.getFlat();
+        index = contact.getIndex();
+    }
+
+    public ContactDto() {
     }
 
     public int getId() {
@@ -75,11 +76,11 @@ public class ContactDto {
         this.middleName = middleName;
     }
 
-    public Instant getDataBirthday() {
+    public String getDataBirthday() {
         return dataBirthday;
     }
 
-    public void setDataBirthday(Instant dataBirthday) {
+    public void setDataBirthday(String dataBirthday) {
         this.dataBirthday = dataBirthday;
     }
 

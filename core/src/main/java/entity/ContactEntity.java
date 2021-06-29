@@ -1,13 +1,19 @@
 package entity;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Instant;
+import java.util.Objects;
 
 
 @Entity
-@Table(name="contact")
+@Table(name = "contact")
 public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +32,12 @@ public class ContactEntity {
     @Column(name = "data_birthday")
     private Instant dataBirthday;
 
-
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name = "citizenship", length = 50)
     private String citizenship;
-
 
     @Column(name = "marital_status")
     @Enumerated(EnumType.STRING)
@@ -53,6 +57,9 @@ public class ContactEntity {
 
     @Column(name = "town", length = 50)
     private String town;
+
+    @Column(name = "street", length = 50)
+    private String street;
 
     @Column(name = "house", length = 50)
     private String house;
@@ -171,6 +178,14 @@ public class ContactEntity {
         this.town = town;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public String getHouse() {
         return house;
     }
@@ -193,5 +208,41 @@ public class ContactEntity {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactEntity{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", dataBirthday=" + dataBirthday +
+                ", gender=" + gender +
+                ", citizenship='" + citizenship + '\'' +
+                ", maritalStatus=" + maritalStatus +
+                ", website='" + website + '\'' +
+                ", email='" + email + '\'' +
+                ", workplace='" + workplace + '\'' +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", street='" + street + '\'' +
+                ", house='" + house + '\'' +
+                ", flat='" + flat + '\'' +
+                ", index=" + index +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactEntity that = (ContactEntity) o;
+        return id == that.id && index == that.index && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(middleName, that.middleName) && Objects.equals(dataBirthday, that.dataBirthday) && gender == that.gender && Objects.equals(citizenship, that.citizenship) && maritalStatus == that.maritalStatus && Objects.equals(website, that.website) && Objects.equals(email, that.email) && Objects.equals(workplace, that.workplace) && Objects.equals(country, that.country) && Objects.equals(town, that.town) && Objects.equals(street, that.street) && Objects.equals(house, that.house) && Objects.equals(flat, that.flat);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, middleName, dataBirthday, gender, citizenship, maritalStatus, website, email, workplace, country, town, street, house, flat, index);
     }
 }
