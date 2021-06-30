@@ -1,9 +1,6 @@
 package dao;
 
-import databace.HibernateUtil;
 import entity.ContactEntity;
-import org.hibernate.Session;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -36,10 +33,24 @@ public class ContactDao extends AbstractDao<ContactEntity>{
     }
 
     @Override
-    public List<ContactEntity> getAll() {
-        List<ContactEntity> list =getSession().createQuery("FROM ContactEntity").list();
-        //Query query = entityManager.createQuery("SELECT e FROM User e");
-        return list;
+//    public List<ContactEntity> getAll() {
+//        List<ContactEntity> list =getSession().createQuery("FROM ContactEntity").list();
+//        //Query query = entityManager.createQuery("SELECT e FROM User e");
+//        return list;
+//    }
+
+    public List<ContactEntity> getAll(int count, int page) {
+
+        int maxResult = count;
+        int startCount = page*count;
+
+
+       // String sql = "SELECT * FROM contact LIMIT "+startCount+ "," + maxResult;
+        String sql = "FROM ContactEntity";
+        List<ContactEntity> list =getSession().createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+
+//        PaginationResult<ContactEntity> result = new PaginationResult<ContactEntity>(query, page, maxResult, maxNavigationResult);
+       return list;
     }
 
     @Override

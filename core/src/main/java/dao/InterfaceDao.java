@@ -9,7 +9,7 @@ public interface InterfaceDao<T> {
     void delete(T entity);
     void update(T entity);
     Optional<T> getById(long id);
-    List<T> getAll();
+    List<T> getAll(int count, int page);
 
 
 }

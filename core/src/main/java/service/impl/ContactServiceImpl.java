@@ -1,6 +1,7 @@
 package service.impl;
 
 import dao.ContactDao;
+import dao.InterfaceDao;
 import dto.ContactDto;
 import entity.ContactEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,13 @@ import java.util.List;
 public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private ContactDao contactDao;
+    private InterfaceDao<ContactEntity> contactDao;
 
 
 
-    public List<ContactDto> getAllContact() {
+    public List<ContactDto> getAllContact(int count, int page) {
 
-        List<ContactEntity> contactList = contactDao.getAll();
+        List<ContactEntity> contactList = contactDao.getAll(count, page);
 
         List<ContactDto> contactDtoList = new ArrayList();
 
@@ -29,9 +30,7 @@ public class ContactServiceImpl implements ContactService {
             contactDtoList.add(contactDto);
         }
 
-        ContactResponse contactResponse = new ContactResponse(contactDtoList);
 
-//        return contactResponse;
 
 
 

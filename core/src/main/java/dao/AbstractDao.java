@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import databace.HibernateUtil;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public abstract class AbstractDao<T> implements InterfaceDao<T> {
@@ -40,7 +37,7 @@ public abstract class AbstractDao<T> implements InterfaceDao<T> {
     }
 
     @SuppressWarnings("unchecked")
-    abstract public List<T> getAll();
+    abstract public List<T> getAll(int count, int page);
     //{
 //        List<T> list;
 //        Session session = HibernateUtil.getSession();
