@@ -1,7 +1,9 @@
 package service;
 
 
+import service.response.ContactListResponse;
 
-
-public interface ContactService {} //    List<ContactEntity> getAllContact();
+public interface ContactService {
+    ContactListResponse getAllContact(int size, int number);
+}
 

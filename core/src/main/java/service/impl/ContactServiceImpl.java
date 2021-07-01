@@ -1,13 +1,13 @@
 package service.impl;
 
-import dao.ContactDao;
 import dao.InterfaceDao;
 import dto.ContactDto;
 import entity.ContactEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.ContactService;
-import service.response.ContactResponse;
+import service.response.ContactListResponse;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,30 +18,21 @@ public class ContactServiceImpl implements ContactService {
     private InterfaceDao<ContactEntity> contactDao;
 
 
+    public ContactListResponse getAllContact(int size, int number) {
 
-    public List<ContactDto> getAllContact(int count, int page) {
+        List<ContactEntity> contactList = contactDao.getAll(size, number);
 
-        List<ContactEntity> contactList = contactDao.getAll(count, page);
-
-        List<ContactDto> contactDtoList = new ArrayList();
+        List<ContactDto> contactDtoList = new ArrayList<>();
 
         for (ContactEntity contact : contactList) {
             ContactDto contactDto = new ContactDto(contact);
             contactDtoList.add(contactDto);
         }
+        int allsize = contactDao.count();
 
-
-
-
-
-        return contactDtoList;
+        ContactListResponse contactResponce = new ContactListResponse(contactDtoList, allsize);
+        return contactResponce;
 
     }
-
-//    public ContactDto getById() {
-//        ContactDto contactDto = new ContactDto(contactDao.getById());
-//        return contactDto;
-//
-//    }
 
 }

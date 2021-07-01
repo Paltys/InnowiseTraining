@@ -9,11 +9,11 @@ import java.util.Optional;
 
 
 @Repository
-public class ContactDao extends AbstractDao<ContactEntity>{
+public class ContactDao extends AbstractDao<ContactEntity> {
 
     @Override
     public Optional<ContactEntity> getById(long id) {
-        ContactEntity contactEntity= getSession().get(ContactEntity.class, id);
+        ContactEntity contactEntity = getSession().get(ContactEntity.class, id);
         return Optional.ofNullable(contactEntity);
     }
 
@@ -33,25 +33,22 @@ public class ContactDao extends AbstractDao<ContactEntity>{
     }
 
     @Override
-//    public List<ContactEntity> getAll() {
-//        List<ContactEntity> list =getSession().createQuery("FROM ContactEntity").list();
-//        //Query query = entityManager.createQuery("SELECT e FROM User e");
-//        return list;
-//    }
+    public List<ContactEntity> getAll(int size, int number) {
+        int maxResult = size;
+        int startCount = number * size;
 
-    public List<ContactEntity> getAll(int count, int page) {
-
-        int maxResult = count;
-        int startCount = page*count;
-
-
-       // String sql = "SELECT * FROM contact LIMIT "+startCount+ "," + maxResult;
         String sql = "FROM ContactEntity";
-        List<ContactEntity> list =getSession().createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
-
-//        PaginationResult<ContactEntity> result = new PaginationResult<ContactEntity>(query, page, maxResult, maxNavigationResult);
-       return list;
+        List<ContactEntity> list = getSession().createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+        return list;
     }
+
+    public int count() {
+        String sql = "FROM ContactEntity";
+
+        int allsize = getSession().createQuery(sql).list().size();
+        return allsize;
+    }
+
 
     @Override
     public void closeCurrentSession() {

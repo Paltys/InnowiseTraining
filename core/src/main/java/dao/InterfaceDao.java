@@ -10,6 +10,7 @@ public interface InterfaceDao<T> {
     void update(T entity);
     Optional<T> getById(long id);
     List<T> getAll(int count, int page);
+    int count();
 
 
 }
