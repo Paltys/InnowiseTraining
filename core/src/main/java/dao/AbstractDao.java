@@ -49,7 +49,7 @@ public abstract class AbstractDao<T> implements InterfaceDao<T> {
   //  }
 
     @Override
-    public Optional<T> getById(long id) {
+    public Optional<T> getById(int id) {
         return (Optional<T>) getSession().get(this.entityClass, id);
     }
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ContactDao extends AbstractDao<ContactEntity> {
 
     @Override
-    public Optional<ContactEntity> getById(long id) {
+    public Optional<ContactEntity> getById(int id) {
         ContactEntity contactEntity = getSession().get(ContactEntity.class, id);
         return Optional.ofNullable(contactEntity);
     }

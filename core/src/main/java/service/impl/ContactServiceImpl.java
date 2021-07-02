@@ -1,5 +1,6 @@
 package service.impl;
 
+import dao.ContactDao;
 import dao.InterfaceDao;
 import dto.ContactDto;
 import entity.ContactEntity;
@@ -10,6 +11,7 @@ import service.response.ContactListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -32,7 +34,16 @@ public class ContactServiceImpl implements ContactService {
 
         ContactListResponse contactResponce = new ContactListResponse(contactDtoList, allsize);
         return contactResponce;
-
     }
 
+    @Override
+    public ContactDto getById(int id) {
+        Optional<ContactEntity> optionalContactEntity = contactDao.getById(id);
+        if (!optionalContactEntity.isPresent()) {
+            throw new RuntimeException();
+        }
+        ContactEntity contact = optionalContactEntity.get();
+        ContactDto contactDto = new ContactDto(contact);
+        return contactDto;
+    }
 }

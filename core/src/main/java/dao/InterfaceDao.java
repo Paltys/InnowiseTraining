@@ -8,7 +8,7 @@ public interface InterfaceDao<T> {
     Serializable create (T entity);
     void delete(T entity);
     void update(T entity);
-    Optional<T> getById(long id);
+    Optional<T> getById(int id);
     List<T> getAll(int count, int page);
     int count();
 
