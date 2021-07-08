@@ -1,6 +1,7 @@
 package dao;
 
 import entity.ContactEntity;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -13,18 +14,25 @@ public class ContactDao extends AbstractDao<ContactEntity> {
 
     @Override
     public Optional<ContactEntity> getById(int id) {
-        ContactEntity contactEntity = getSession().get(ContactEntity.class, id);
+        Session session = getSession();
+        ContactEntity contactEntity = session.get(ContactEntity.class, id);
+        closeCurrentSession(session);
         return Optional.ofNullable(contactEntity);
     }
 
     @Override
     public Serializable create(ContactEntity obj) {
-        return super.create(obj);
+        Session session = getSession();
+        Serializable id=session.save(obj);
+        closeCurrentSession(session);
+        return id;
     }
 
     @Override
     public void delete(ContactEntity obj) {
-        super.delete(obj);
+        Session session = getSession();
+        session.delete(obj);
+        closeCurrentSession(session);
     }
 
     @Override
@@ -38,20 +46,23 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         int startCount = number * size;
 
         String sql = "FROM ContactEntity";
-        List<ContactEntity> list = getSession().createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+        Session session = getSession();
+        List<ContactEntity> list = session.createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+        closeCurrentSession(session);
         return list;
     }
 
     public int count() {
         String sql = "FROM ContactEntity";
-
-        int allsize = getSession().createQuery(sql).list().size();
+        Session session = getSession();
+        int allsize = session.createQuery(sql).list().size();
+        closeCurrentSession(session);
         return allsize;
     }
 
 
     @Override
-    public void closeCurrentSession() {
-        super.closeCurrentSession();
+    public void closeCurrentSession(Session session) {
+        super.closeCurrentSession(session);
     }
 }

@@ -16,16 +16,14 @@ public abstract class AbstractDao<T> implements InterfaceDao<T> {
         this.entityClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
                 .getActualTypeArguments()[0];
     }
-//    @Autowired
-//    private SessionFactory sessionFactory;
 
     protected Session getSession() {
-        //return this.sessionFactory.getCurrentSession();
         return HibernateUtil.getSession();
     }
 
     public Serializable create(T obj) {
         return getSession().save(obj);
+
     }
 
     public void delete(T obj) {
@@ -38,22 +36,13 @@ public abstract class AbstractDao<T> implements InterfaceDao<T> {
 
     @SuppressWarnings("unchecked")
     abstract public List<T> getAll(int count, int page);
-    //{
-//        List<T> list;
-//        Session session = HibernateUtil.getSession();
-//        Query<T> query = session.createQuery("FROM ContactEntity ");
-//        list = query.list();
-//        HibernateUtil.closeSession(session);
-        //return (List<T>) getSession().getCriteriaBuilder().createQuery();
-        //return getSession().createCriteria(this.entytiClass).list();
-  //  }
 
     @Override
     public Optional<T> getById(int id) {
         return (Optional<T>) getSession().get(this.entityClass, id);
     }
 
-   public void closeCurrentSession(){
-        HibernateUtil.closeSession(getSession());
+   public void closeCurrentSession(Session session){
+        HibernateUtil.closeSession(session);
    }
 }

@@ -14,8 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
+
 
 
 @Entity
@@ -25,7 +26,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 @ToString
 @Accessors(chain = true)
-public class ContactEntity {
+public class ContactEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -78,7 +79,7 @@ public class ContactEntity {
     @Column(name = "flat", length = 50)
     private String flat;
 
-    @Column(name = "index")
-    private int index;
+    @Column(name = "adressindex")
+    private int adressIndex;
 
 }

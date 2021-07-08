@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import service.ContactService;
 import service.response.ContactListResponse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,5 +46,20 @@ public class ContactServiceImpl implements ContactService {
         ContactEntity contact = optionalContactEntity.get();
         ContactDto contactDto = new ContactDto(contact);
         return contactDto;
+    }
+
+    public int createNewContact(ContactEntity newContact){
+        return  (int)contactDao.create(newContact);
+//        return getById(idSaveElement);
+    }
+
+    @Override
+    public void deleteContact(int id) {
+        Optional<ContactEntity> optionalContactEntity = contactDao.getById(id);
+        if (!optionalContactEntity.isPresent()) {
+            throw new RuntimeException();
+        }
+        ContactEntity contact = optionalContactEntity.get();
+        contactDao.delete(contact);
     }
 }

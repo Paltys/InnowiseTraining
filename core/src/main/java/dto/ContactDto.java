@@ -25,7 +25,7 @@ public class ContactDto {
     private String town;
     private String house;
     private String flat;
-    private int index;
+    private int adressIndex;
 
     public ContactDto(ContactEntity contact) {
         id = contact.getId();
@@ -43,7 +43,7 @@ public class ContactDto {
         town = contact.getTown();
         house = contact.getHouse();
         flat = contact.getFlat();
-        index = contact.getIndex();
+        adressIndex = contact.getAdressIndex();
     }
 
 }
