@@ -62,4 +62,9 @@ public class ContactServiceImpl implements ContactService {
         ContactEntity contact = optionalContactEntity.get();
         contactDao.delete(contact);
     }
+
+    @Override
+    public void updateContact(ContactEntity obj) {
+        contactDao.update(obj);
+    }
 }

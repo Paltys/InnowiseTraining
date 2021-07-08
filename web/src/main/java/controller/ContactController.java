@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,9 +24,6 @@ import service.ContactService;
 import service.response.ContactListResponse;
 import service.response.ErrorResponce;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Serializable;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -66,6 +64,17 @@ public class ContactController {
     public  ResponseEntity<?> deleteContact(@PathVariable int id) {
         try {
             contactService.deleteContact(id);
+        } catch (RuntimeException e) {
+            ErrorResponce errorResponce = new ErrorResponce("404","Sorry. Contact not found","contact");
+            return new ResponseEntity<>(errorResponce, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?>updateContact(@RequestBody ContactEntity updateEntity){
+        try {
+            contactService.updateContact(updateEntity);
         } catch (RuntimeException e) {
             ErrorResponce errorResponce = new ErrorResponce("404","Sorry. Contact not found","contact");
             return new ResponseEntity<>(errorResponce, HttpStatus.NOT_FOUND);

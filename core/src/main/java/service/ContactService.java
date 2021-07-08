@@ -16,5 +16,7 @@ public interface ContactService {
     int createNewContact(ContactEntity obj);
 
     void deleteContact(int id);
+
+    void updateContact(ContactEntity obj);
 }
 

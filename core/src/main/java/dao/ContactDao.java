@@ -37,7 +37,9 @@ public class ContactDao extends AbstractDao<ContactEntity> {
 
     @Override
     public void update(ContactEntity obj) {
-        super.update(obj);
+        Session session = getSession();
+        session.update(obj);
+        closeCurrentSession(session);
     }
 
     @Override

@@ -6,7 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -64,22 +67,33 @@ public class ContactEntity implements Serializable {
     @Column(name = "workplace", length = 100)
     private String workplace;
 
-    @Column(name = "country", length = 50)
-    private String country;
+//    @Column(name = "country", length = 50)
+//    private String country;
+//
+//    @Column(name = "town", length = 50)
+//    private String town;
+//
+//    @Column(name = "street", length = 50)
+//    private String street;
+//
+//    @Column(name = "house", length = 50)
+//    private String house;
+//
+//    @Column(name = "flat", length = 50)
+//    private String flat;
+//
+//    @Column(name = "adressindex")
+//    private int adressIndex;
 
-    @Column(name = "town", length = 50)
-    private String town;
-
-    @Column(name = "street", length = 50)
-    private String street;
-
-    @Column(name = "house", length = 50)
-    private String house;
-
-    @Column(name = "flat", length = 50)
-    private String flat;
-
-    @Column(name = "adressindex")
-    private int adressIndex;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="country",column = @Column(name ="country")),
+            @AttributeOverride(name="town",column = @Column(name ="town")),
+            @AttributeOverride(name="street",column = @Column(name ="street")),
+            @AttributeOverride(name="house",column = @Column(name ="house")),
+            @AttributeOverride(name="flat",column = @Column(name ="flat")),
+            @AttributeOverride(name="adressIndex",column = @Column(name ="adressIndex")),
+    })
+    private ContactAddress contactAddress;
 
 }
