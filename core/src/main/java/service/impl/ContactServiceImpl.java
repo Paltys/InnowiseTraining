@@ -3,6 +3,7 @@ package service.impl;
 import dao.ContactDao;
 import dao.InterfaceDao;
 import dto.ContactDto;
+import entity.ContactAddress;
 import entity.ContactEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

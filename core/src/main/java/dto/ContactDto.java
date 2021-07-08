@@ -39,11 +39,11 @@ public class ContactDto {
         website = contact.getWebsite();
         email = contact.getEmail();
         workplace = contact.getWorkplace();
-        country = contact.getCountry();
-        town = contact.getTown();
-        house = contact.getHouse();
-        flat = contact.getFlat();
-        adressIndex = contact.getAdressIndex();
+        country = contact.getContactAddress().getCountry();
+        town = contact.getContactAddress().getTown();
+        house = contact.getContactAddress().getHouse();
+        flat = contact.getContactAddress().getFlat();
+        adressIndex = contact.getContactAddress().getAdressIndex();
     }
 
 }
