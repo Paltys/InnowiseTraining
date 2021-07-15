@@ -23,9 +23,11 @@ public class ContactDto {
     private String workplace;
     private String country;
     private String town;
+    private String street;
     private String house;
     private String flat;
-    private int adressIndex;
+    private String addressIndex;
+    private String avatarUrl;
 
     public ContactDto(ContactEntity contact) {
         id = contact.getId();
@@ -39,11 +41,13 @@ public class ContactDto {
         website = contact.getWebsite();
         email = contact.getEmail();
         workplace = contact.getWorkplace();
-        country = contact.getContactAddress().getCountry();
-        town = contact.getContactAddress().getTown();
-        house = contact.getContactAddress().getHouse();
-        flat = contact.getContactAddress().getFlat();
-        adressIndex = contact.getContactAddress().getAdressIndex();
+        country = contact.getContactAddressEmbeddable().getCountry();
+        town = contact.getContactAddressEmbeddable().getTown();
+        street = contact.getContactAddressEmbeddable().getStreet();
+        house = contact.getContactAddressEmbeddable().getHouse();
+        flat = contact.getContactAddressEmbeddable().getFlat();
+        addressIndex = contact.getContactAddressEmbeddable().getAddressIndex();
+        avatarUrl=contact.getAvatarUrl();
     }
 
 }

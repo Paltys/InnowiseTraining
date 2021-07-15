@@ -1,20 +1,25 @@
 package service.impl;
 
-import dao.ContactDao;
+
 import dao.InterfaceDao;
 import dto.ContactDto;
-import entity.ContactAddress;
+
+import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
+import entity.Gender;
+import entity.Maritalstatus;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.ContactService;
 import service.response.ContactListResponse;
 
-import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class ContactServiceImpl implements ContactService {
 
@@ -51,7 +56,7 @@ public class ContactServiceImpl implements ContactService {
 
     public int createNewContact(ContactEntity newContact){
         return  (int)contactDao.create(newContact);
-//        return getById(idSaveElement);
+
     }
 
     @Override
@@ -65,7 +70,22 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void updateContact(ContactEntity obj) {
-        contactDao.update(obj);
+    public void updateContact(ContactDto obj, int id) {
+        ContactEntity contactEntity = new ContactEntity();
+        ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(obj.getCountry(),obj.getTown(),obj.getStreet(),obj.getHouse(),obj.getFlat(),obj.getAddressIndex());
+        contactEntity.setId(id);
+        contactEntity.setFirstName(obj.getFirstName());
+        contactEntity.setLastName(obj.getLastName());
+        contactEntity.setMiddleName(obj.getMiddleName());
+        contactEntity.setDataBirthday(Instant.parse(obj.getDataBirthday()));
+        contactEntity.setGender(Gender.valueOf(obj.getGender()));
+        contactEntity.setCitizenship(obj.getCitizenship());
+        contactEntity.setMaritalStatus(Maritalstatus.valueOf(obj.getMaritalStatus()));
+        contactEntity.setWebsite(obj.getWebsite());
+        contactEntity.setEmail(obj.getEmail());
+        contactEntity.setWorkplace(obj.getWorkplace());
+        contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
+
+        contactDao.update(contactEntity);
     }
 }

@@ -1,12 +1,10 @@
 package controller;
 
 
-import dao.ContactDao;
+
 import dto.ContactDto;
 import entity.ContactEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import service.ContactService;
 import service.response.ContactListResponse;
@@ -72,15 +69,14 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>updateContact(@RequestBody ContactEntity updateEntity){
+    public ResponseEntity<?>updateContact(@RequestBody ContactDto contactDto,@PathVariable int id){
         try {
-            contactService.updateContact(updateEntity);
+            contactService.updateContact(contactDto,id);
         } catch (RuntimeException e) {
             ErrorResponce errorResponce = new ErrorResponce("404","Sorry. Contact not found","contact");
             return new ResponseEntity<>(errorResponce, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }

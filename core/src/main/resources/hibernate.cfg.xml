@@ -21,5 +21,7 @@
 
         <!-- Мапинг наших сущностей -->
         <mapping class="entity.ContactEntity"/>
+        <mapping class="entity.PhoneEntity"/>
+        <mapping class="entity.AttachmentEntity"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,9 +1,6 @@
 package entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.AttributeOverride;
@@ -13,21 +10,20 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
-
+import java.util.Collection;
 
 
 @Entity
 @Table(name = "contact")
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Accessors(chain = true)
 public class ContactEntity implements Serializable {
     @Id
@@ -67,24 +63,6 @@ public class ContactEntity implements Serializable {
     @Column(name = "workplace", length = 100)
     private String workplace;
 
-//    @Column(name = "country", length = 50)
-//    private String country;
-//
-//    @Column(name = "town", length = 50)
-//    private String town;
-//
-//    @Column(name = "street", length = 50)
-//    private String street;
-//
-//    @Column(name = "house", length = 50)
-//    private String house;
-//
-//    @Column(name = "flat", length = 50)
-//    private String flat;
-//
-//    @Column(name = "adressindex")
-//    private int adressIndex;
-
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="country",column = @Column(name ="country")),
@@ -92,8 +70,16 @@ public class ContactEntity implements Serializable {
             @AttributeOverride(name="street",column = @Column(name ="street")),
             @AttributeOverride(name="house",column = @Column(name ="house")),
             @AttributeOverride(name="flat",column = @Column(name ="flat")),
-            @AttributeOverride(name="adressIndex",column = @Column(name ="adressIndex")),
+            @AttributeOverride(name="addressIndex",column = @Column(name ="addressIndex")),
     })
-    private ContactAddress contactAddress;
+    private ContactAddressEmbeddable contactAddressEmbeddable;
+
+    @OneToMany(mappedBy = "contactEntity", fetch = FetchType.LAZY)
+    private Collection<PhoneEntity> phoneEntity;
+
+    @Column(name="avatar_url", length = 100)
+    private String avatarUrl;
+
+
 
 }

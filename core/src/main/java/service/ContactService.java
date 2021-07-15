@@ -5,8 +5,6 @@ import dto.ContactDto;
 import entity.ContactEntity;
 import service.response.ContactListResponse;
 
-import java.io.Serializable;
-
 public interface ContactService {
 
     ContactListResponse getAllContact(int size, int number);
@@ -17,6 +15,6 @@ public interface ContactService {
 
     void deleteContact(int id);
 
-    void updateContact(ContactEntity obj);
+    void updateContact(ContactDto obj, int id);
 }
 
