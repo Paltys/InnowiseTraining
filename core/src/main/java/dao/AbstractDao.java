@@ -9,7 +9,7 @@ import dto.SearchContactDto;
 import org.hibernate.Session;
 
 
-public abstract class AbstractDao<T> implements InterfaceDao<T> {
+public abstract class AbstractDao<T> implements Dao<T> {
 
     private final Class<T> entityClass;
 

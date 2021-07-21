@@ -1,32 +1,56 @@
 package dto;
-
 import entity.ContactEntity;
+import entity.Gender;
+import entity.Maritalstatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactDto {
-
+    @NotNull(message = "id cannot be null")
+    @Length(message = "id should not be greater than 2147483647" )
     private int id;
+    @NotNull(message = "firstName cannot be null")
+    @Length(max = 50, message = "first name should not be greater than 50")
     private String firstName;
+    @NotNull(message = "lastName cannot be null")
+    @Length(max = 50, message = "last name should not be greater than 50")
     private String lastName;
+    @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
-    private String dataBirthday;
-    private String gender;
+    @Past(message = "birthday data should not be future")
+    private Instant dataBirthday;
+    private Gender gender;
+    @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
-    private String maritalStatus;
+    private Maritalstatus maritalStatus;
+    @Length(max = 50, message = "workplace should not be greater than 50")
     private String website;
+    @Email(message = "its not be email")
     private String email;
+    @Length(max = 100, message = "workplace should not be greater than 100")
     private String workplace;
+    @Length(max = 50, message = "country should not be greater than 50")
     private String country;
+    @Length(max = 50, message = "town should not be greater than 50")
     private String town;
+    @Length(max = 50, message = "street should not be greater than 50")
     private String street;
+    @Length(max = 50, message = "house should not be greater than 50")
     private String house;
+    @Length(max = 50, message = "flat should not be greater than 50")
     private String flat;
+    @Length(max = 50, message = "addressIndex should not be greater than 50")
     private String addressIndex;
+    @Length(max = 50, message = "avatarUrl should not be greater than 50")
     private String avatarUrl;
 
     public ContactDto(ContactEntity contact) {
@@ -34,10 +58,10 @@ public class ContactDto {
         firstName = contact.getFirstName();
         lastName = contact.getLastName();
         middleName = contact.getMiddleName();
-        dataBirthday = contact.getDataBirthday().toString();
-        gender = contact.getGender().toString();
+        dataBirthday = contact.getDataBirthday();
+        gender = contact.getGender();
         citizenship = contact.getCitizenship();
-        maritalStatus = contact.getMaritalStatus().toString();
+        maritalStatus = contact.getMaritalStatus();
         website = contact.getWebsite();
         email = contact.getEmail();
         workplace = contact.getWorkplace();
