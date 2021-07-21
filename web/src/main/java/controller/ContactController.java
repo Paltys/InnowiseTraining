@@ -3,6 +3,8 @@ package controller;
 
 
 import dto.ContactDto;
+import dto.RequestContactDto;
+import dto.SearchContactDto;
 import entity.ContactEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +38,15 @@ public class ContactController {
     public ContactListResponse retrieveList(@RequestParam int size, @RequestParam int number) {
         return contactService.getAllContact(size, number);
     }
+    @PostMapping("/find")
+    public ContactListResponse retrievefindBy(@RequestParam int size, @RequestParam int number,@RequestBody SearchContactDto searchContactDto) {
+        return contactService.findBy(size, number, searchContactDto);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) {
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
-        params.add("Content-Type", "application/json");
+//        params.add("Content-Type", "application/json");
 
         try {
             ContactDto contactDto = contactService.getById(id);
@@ -53,8 +59,8 @@ public class ContactController {
     }
 
     @PostMapping
-    public int createContact(@RequestBody ContactEntity newContact){
-        return contactService.createNewContact(newContact);
+    public int createContact(@RequestBody RequestContactDto requestContactDto){
+        return contactService.createNewContact(requestContactDto);
     }
 
     @DeleteMapping("/{id}")
@@ -69,9 +75,9 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>updateContact(@RequestBody ContactDto contactDto,@PathVariable int id){
+    public ResponseEntity<?>updateContact(@RequestBody RequestContactDto requestContactDto,@PathVariable int id){
         try {
-            contactService.updateContact(contactDto,id);
+            contactService.updateContact(requestContactDto,id);
         } catch (RuntimeException e) {
             ErrorResponce errorResponce = new ErrorResponce("404","Sorry. Contact not found","contact");
             return new ResponseEntity<>(errorResponce, HttpStatus.NOT_FOUND);

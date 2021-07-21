@@ -1,6 +1,7 @@
 package dao;
 
 
+import dto.SearchContactDto;
 import entity.PhoneEntity;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity>{
     @Override
     public int count() {
         return 0;
+    }
+
+    @Override
+    public List<PhoneEntity> findBy(int count, int page, SearchContactDto searchContactDto) {
+        return null;
     }
 }

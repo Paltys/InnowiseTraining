@@ -4,6 +4,8 @@ import dto.AttachmentDto;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 public interface AttachmentService {
 
@@ -16,4 +18,6 @@ public interface AttachmentService {
     void deleteAttachment(int id);
 
     void updateAttachment(MultipartFile file, String name, int id);
+
+    void getFile(String key, HttpServletResponse responce);
 }

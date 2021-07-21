@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -74,7 +75,7 @@ public class ContactEntity implements Serializable {
     })
     private ContactAddressEmbeddable contactAddressEmbeddable;
 
-    @OneToMany(mappedBy = "contactEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contactEntity",cascade = CascadeType.ALL )
     private Collection<PhoneEntity> phoneEntity;
 
     @Column(name="avatar_url", length = 100)

@@ -33,7 +33,7 @@ public class PhoneEntity implements Serializable {
     @Column(name = "description", length = 500)
     private String description;
 
-    @ManyToOne (optional = false,cascade = CascadeType.ALL)
+    @ManyToOne (optional = false,fetch = FetchType.LAZY)
     @JoinColumn (name = "id_contact")
     private ContactEntity contactEntity;
 

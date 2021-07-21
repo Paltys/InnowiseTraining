@@ -89,7 +89,7 @@ public class RequestContactDto {
             attachmentEntity.setLoadDate(Instant.parse(attachment.getLoadDate()));
             attachmentEntity.setUpdateDate(Instant.parse(attachment.getUpdateDate()));
             attachmentEntity.setComment(attachment.getComments());
-            attachmentEntity.setType(attachment.getType());
+            attachmentEntity.setType(String.valueOf(id));
 
             if (attachment.getDeleteDate() == "null")
                 attachmentEntity.setDeleteDate(null);

@@ -1,5 +1,7 @@
 package dao;
 
+import dto.ContactDto;
+import dto.SearchContactDto;
 import entity.ContactEntity;
 
 import java.io.Serializable;
@@ -13,6 +15,7 @@ public interface InterfaceDao<T> {
     Optional<T> getById(int id);
     List<T> getAll(int count, int page);
     int count();
+    List<T> findBy(int count, int page, SearchContactDto searchContactDto);
 
 
 }

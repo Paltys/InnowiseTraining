@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import databace.HibernateUtil;
+import dto.SearchContactDto;
 import org.hibernate.Session;
 
 
@@ -42,7 +43,10 @@ public abstract class AbstractDao<T> implements InterfaceDao<T> {
         return (Optional<T>) getSession().get(this.entityClass, id);
     }
 
-   public void closeCurrentSession(Session session){
+    @Override
+    abstract public List<T> findBy(int count, int page, SearchContactDto searchContactDto);
+
+    public void closeCurrentSession(Session session){
         HibernateUtil.closeSession(session);
    }
 }

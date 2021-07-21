@@ -69,7 +69,5 @@ public class PhoneServiceImpl implements PhoneService {
         phoneEntity.setDescription(updatePhone.getDescription());
 
         phoneDao.update(phoneEntity);
-
-
     }
 }

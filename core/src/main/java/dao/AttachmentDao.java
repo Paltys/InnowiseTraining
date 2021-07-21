@@ -1,5 +1,6 @@
 package dao;
 
+import dto.SearchContactDto;
 import entity.AttachmentEntity;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,10 @@ public class AttachmentDao extends AbstractDao<AttachmentEntity> {
     @Override
     public int count() {
         return 0;
+    }
+
+    @Override
+    public List<AttachmentEntity> findBy(int count, int page, SearchContactDto searchContactDto) {
+        return null;
     }
 }
