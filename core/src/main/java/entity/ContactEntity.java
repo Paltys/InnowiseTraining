@@ -26,7 +26,7 @@ import java.util.Collection;
 @Table(name = "contact")
 @Data
 @Accessors(chain = true)
-public class ContactEntity implements Serializable {
+public class ContactEntity implements Serializable { //todo убрать неиспользуемые импорты
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

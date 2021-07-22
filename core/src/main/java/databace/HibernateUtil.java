@@ -26,7 +26,7 @@ public class HibernateUtil {
         if (session !=null){
             try{
                 session.getTransaction().commit();
-
+//todo удалить отступы
             }finally {
                 session.close();
             }
@@ -34,5 +34,5 @@ public class HibernateUtil {
     }
 
 
-
+//todo удалить отступы
 }

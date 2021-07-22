@@ -34,7 +34,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private final InterfaceDao<AttachmentEntity> attachmentDao;
 
     @Autowired
-    private final ServletContext context;
+    private final ServletContext context;//todo удалить неиспользуемые объекты
 
     @Autowired
     private final ResourceLoader resourceLoader;
@@ -149,7 +149,6 @@ public class AttachmentServiceImpl implements AttachmentService {
         String fileName = file.getOriginalFilename();
 
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
-
         attachmentEntity.setName(fileName);
         attachmentEntity.setUpdateDate(Instant.now());
         attachmentEntity.setComment("");
@@ -163,14 +162,16 @@ public class AttachmentServiceImpl implements AttachmentService {
         String path = String.format("%s/%s","root/files",fileName);
         Path file = Paths.get(path);
         Resource resource = new UrlResource(file.toUri());
-        responce.setContentType("image/jpeg");
+        responce.setContentType("image/jpeg"); //todo добавить определение ContentType в зависисмости от формата файла
         IOUtils.copy(resource.getInputStream(), responce.getOutputStream());
         responce.addHeader("Content-disposition","attachment; filename=\""+resource.getFilename()+"\"");
         responce.flushBuffer();
-
+        //todo с HttpServletResponse можно работать на уровне контроллера, так как требуется отдать файл на представление, то все что нужно,
+        // это передать resource на уровень контроллера и на уровне контроллера положить ресурс в HttpServletResponse.
+//todo удалить отступы
 
         }
-
+//todo удалить отступы
     }
 
 

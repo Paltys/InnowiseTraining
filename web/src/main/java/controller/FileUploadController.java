@@ -22,15 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/file")
-public class FileUploadController {
-
+public class FileUploadController { //todo delete unused imports
 
     private final AttachmentService attachmentService;
 
     public FileUploadController(AttachmentService attachmentService) {
         this.attachmentService = attachmentService;
     }
-
 
     @PostMapping
     public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) {
@@ -43,7 +41,7 @@ public class FileUploadController {
         }
         return url;
     }
-
+    /*todo удалить закомментированный код */
 //    @GetMapping("/{id}")
 //    public ResponseEntity<?> retrieveById(@PathVariable int id) {
 //        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -62,5 +60,5 @@ public class FileUploadController {
         attachmentService.getFile(key, responce);
     }
 
-
+//todo удалить отступы
 }

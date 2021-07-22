@@ -39,13 +39,13 @@ public class ContactController {
         return contactService.getAllContact(size, number);
     }
     @PostMapping("/find")
-    public ContactListResponse retrievefindBy(@RequestParam int size, @RequestParam int number,@RequestBody SearchContactDto searchContactDto) {
+    public ContactListResponse retrievefindBy/*todo название должно быть в camel case*/(@RequestParam int size, @RequestParam int number,@RequestBody SearchContactDto searchContactDto) {
         return contactService.findBy(size, number, searchContactDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) {
-        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();//todo удалить неиспользуемые объекты
 //        params.add("Content-Type", "application/json");
 
         try {
