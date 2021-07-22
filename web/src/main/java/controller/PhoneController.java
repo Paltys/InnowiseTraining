@@ -30,16 +30,13 @@ public class PhoneController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();//todo удалить неиспользуемые объекты
-        params.add("Content-Type", "application/json");
-
         try {
             PhoneDto phoneDto = phoneService.getById(id);
             return new ResponseEntity<>(phoneDto, HttpStatus.OK);
         } catch (RuntimeException e) {
             ErrorResponse errorResponse = new ErrorResponse("404", "Sorry. Phone not found");
 
-            return new ResponseEntity<>(errorResponse, params, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
     }
 
