@@ -1,35 +1,39 @@
 package entity;
 
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import java.io.Serializable;
+import java.time.Instant;
 
 
 @Entity
 @Table(name="attachment")
-class AttachmentEntity {
+@Data
+@Accessors(chain = true)
+public class AttachmentEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "id_contact")
-    private int idContact;
-
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 255)
     private String name;
 
     @Column(name = "url", length = 100)
     private String url;
 
     @Column(name = "load_date")
-    private Timestamp loadDate;
+    private Instant loadDate;
 
-    @Column(name = "load_date")
-    private Timestamp updateDate;
+    @Column(name = "update_date")
+    private Instant updateDate;
 
-    @Column(name = "load_date")
-    private Timestamp deleteDate;
+    @Column(name = "delete_date")
+    private Instant deleteDate;
 
     @Column(name = "comment", length = 500)
     private String comment;

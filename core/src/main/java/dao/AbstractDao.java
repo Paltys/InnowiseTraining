@@ -1,41 +1,52 @@
 package dao;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Optional;
 
 import databace.HibernateUtil;
+import dto.SearchContactDto;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-public abstract class AbstractDao<T> {
-    abstract public T get(long id);
 
-    public long insert(T obj) {
-        Session session = HibernateUtil.getSession();
-        Serializable sss = session.save(obj);
-        long newId = (long)sss;
-        HibernateUtil.closeSession(session);
-        return newId;
+public abstract class AbstractDao<T> implements InterfaceDao<T> {
+
+    private final Class<T> entityClass;
+
+    public AbstractDao() {
+        this.entityClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+                .getActualTypeArguments()[0];
+    }
+
+    protected Session getSession() {
+        return HibernateUtil.getSession();
+    }
+
+    public Serializable create(T obj) {
+        return getSession().save(obj);
+
     }
 
     public void delete(T obj) {
-        Session session = HibernateUtil.getSession();
-        session.delete(obj);
-        HibernateUtil.closeSession(session);
+         getSession().delete(obj);
     }
 
     public void update(T obj) {
-        Session session = HibernateUtil.getSession();
-        session.update(obj);
-        HibernateUtil.closeSession(session);
+        getSession().update(obj);
     }
 
     @SuppressWarnings("unchecked")
-    public List<T> getAll(){
-        List<T> list;
-        Session session = HibernateUtil.getSession();
-        Query<T> query = session.createQuery("FROM ContactEntity ");
-        list = query.list();
-        HibernateUtil.closeSession(session);
-        return list;
+    abstract public List<T> getAll(int count, int page);
+
+    @Override
+    public Optional<T> getById(int id) {
+        return (Optional<T>) getSession().get(this.entityClass, id);
     }
+
+    @Override
+    abstract public List<T> findBy(int count, int page, SearchContactDto searchContactDto);
+
+    public void closeCurrentSession(Session session){
+        HibernateUtil.closeSession(session);
+   }
 }

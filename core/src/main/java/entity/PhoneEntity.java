@@ -1,32 +1,40 @@
 package entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
+import java.io.Serializable;
+
 
 @Entity
 @Table(name="phone")
-public class PhoneEntity {
+@Data
+@Accessors(chain = true)
+public class PhoneEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "id_contact")
-    private int idContact;
-
     @Column(name = "country_code")
-    private int countryCode;
+    private String countryCode;
 
     @Column(name = "operator_code")
-    private int operatorCode;
+    private String operatorCode;
 
-    @Column(name = "code")
-    private int code;
+    @Column(name = "phone")
+    private String phone;
 
-    @Column(name = "type", length = 50)
-    private String type;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private PhoneType type;
 
-    @Column(name = "type", length = 500)
+    @Column(name = "description", length = 500)
     private String description;
 
+    @ManyToOne (optional = false,fetch = FetchType.LAZY)
+    @JoinColumn (name = "id_contact")
+    private ContactEntity contactEntity;
 
 }

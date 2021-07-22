@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 @Controller
 @RequestMapping(value = "/test")
-public class TestController {
+public class TestController {//todo удалить неиспользуемые объекты
 
     @ResponseBody
     @GetMapping
@@ -22,6 +22,6 @@ public class TestController {
         PrintWriter writer = response.getWriter();
         writer.write("Hello");
         writer.flush();
-
+//todo удалить отступы
     }
 }
