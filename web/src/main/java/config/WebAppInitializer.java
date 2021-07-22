@@ -11,7 +11,7 @@ import javax.servlet.ServletRegistration;
 
 public class WebAppInitializer implements WebApplicationInitializer {
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+    public void onStartup(ServletContext servletContext) throws ServletException {//todo ненужный проброс ошибки
         AnnotationConfigWebApplicationContext appContext =
                 new AnnotationConfigWebApplicationContext();
 
@@ -22,6 +22,6 @@ public class WebAppInitializer implements WebApplicationInitializer {
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }
-
+//todo удалить отступы
 
 }

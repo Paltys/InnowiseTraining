@@ -30,7 +30,7 @@ public class PhoneController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();//todo удалить неиспользуемые объекты
         params.add("Content-Type", "application/json");
 
         try {
