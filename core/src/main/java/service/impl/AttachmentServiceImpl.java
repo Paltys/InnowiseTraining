@@ -1,6 +1,6 @@
 package service.impl;
 
-import dao.InterfaceDao;
+import dao.Dao;
 import dto.AttachmentDto;
 import entity.AttachmentEntity;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +30,7 @@ import java.util.Optional;
 public class AttachmentServiceImpl implements AttachmentService {
 
     @Autowired
-    private final InterfaceDao<AttachmentEntity> attachmentDao;
+    private final Dao<AttachmentEntity> attachmentDao;
 
     @Autowired
     private final ServletContext context;//todo удалить неиспользуемые объекты

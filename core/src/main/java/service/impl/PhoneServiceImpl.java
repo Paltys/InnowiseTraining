@@ -1,10 +1,9 @@
 package service.impl;
 
-import dao.InterfaceDao;
+import dao.Dao;
 import dto.PhoneDto;
 import entity.ContactEntity;
 import entity.PhoneEntity;
-import entity.PhoneType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.PhoneService;
@@ -13,22 +12,19 @@ import java.util.Optional;
 
 @Service
 public class PhoneServiceImpl implements PhoneService {
-
     @Autowired
-    private InterfaceDao<PhoneEntity> phoneDao;
-
+    private Dao<PhoneEntity> phoneDao;
     @Autowired
-    private InterfaceDao<ContactEntity> contactDao;
+    private Dao<ContactEntity> contactDao;
 
     @Override
     public PhoneDto getById(int id) {
         Optional<PhoneEntity> optionalPhoneEntity = phoneDao.getById(id);
-        if (!optionalPhoneEntity.isPresent()) {
+        if (optionalPhoneEntity.isEmpty()) {
             throw new RuntimeException();
         }
         PhoneEntity phone = optionalPhoneEntity.get();
-        PhoneDto phonetDto = new PhoneDto(phone);
-        return phonetDto;
+        return new PhoneDto(phone);
     }
 
     @Override
@@ -40,7 +36,7 @@ public class PhoneServiceImpl implements PhoneService {
         phoneEntity.setCountryCode(newPhone.getCountryCode());
         phoneEntity.setOperatorCode(newPhone.getOperatorCode());
         phoneEntity.setPhone(newPhone.getPhone());
-        phoneEntity.setType(PhoneType.valueOf(newPhone.getType()));
+        phoneEntity.setType(newPhone.getType());
         phoneEntity.setDescription(newPhone.getDescription());
         return (int) phoneDao.create(phoneEntity);
     }
@@ -48,7 +44,7 @@ public class PhoneServiceImpl implements PhoneService {
     @Override
     public void deletePhone(int id) {
         Optional<PhoneEntity> optionalPhoneEntity = phoneDao.getById(id);
-        if (!optionalPhoneEntity.isPresent()) {
+        if (optionalPhoneEntity.isEmpty()) {
             throw new RuntimeException();
         }
         PhoneEntity phone = optionalPhoneEntity.get();
@@ -60,14 +56,16 @@ public class PhoneServiceImpl implements PhoneService {
         PhoneEntity phoneEntity = new PhoneEntity();
         phoneEntity.setId(id);
         Optional<ContactEntity> contactEntity = contactDao.getById(updatePhone.getIdContact());
+        if (contactEntity.isEmpty()) {
+            throw new RuntimeException();
+        }
         ContactEntity contact = contactEntity.get();
         phoneEntity.setContactEntity(contact);
         phoneEntity.setCountryCode(updatePhone.getCountryCode());
         phoneEntity.setOperatorCode(updatePhone.getOperatorCode());
         phoneEntity.setPhone(updatePhone.getPhone());
-        phoneEntity.setType(PhoneType.valueOf(updatePhone.getType()));
+        phoneEntity.setType(updatePhone.getType());
         phoneEntity.setDescription(updatePhone.getDescription());
-
         phoneDao.update(phoneEntity);
     }
 }

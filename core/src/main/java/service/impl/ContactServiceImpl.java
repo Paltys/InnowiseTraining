@@ -1,16 +1,12 @@
 package service.impl;
 
 
-import dao.InterfaceDao;
+import dao.Dao;
 import dto.ContactDto;
-
 import dto.RequestContactDto;
 import dto.SearchContactDto;
 import entity.AttachmentEntity;
-import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
-import entity.Gender;
-import entity.Maritalstatus;
 import entity.PhoneEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +16,7 @@ import service.response.ContactListResponse;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +25,13 @@ import java.util.Optional;
 public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private final InterfaceDao<ContactEntity> contactDao;
+    private final Dao<ContactEntity> contactDao;
 
     @Autowired
-    private final InterfaceDao<PhoneEntity> phoneDao;
+    private final Dao<PhoneEntity> phoneDao;
 
     @Autowired
-    private final InterfaceDao<AttachmentEntity> attachmentDao;
+    private final Dao<AttachmentEntity> attachmentDao;
 
 
     public ContactListResponse getAllContact(int size, int number) {
@@ -93,16 +90,16 @@ public class ContactServiceImpl implements ContactService {
     public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) {
         List<ContactEntity> contactList = contactDao.findBy(size, number, searchContactDto);
 
-        List<ContactDto> contactDtoList = new ArrayList<>();
+        List<ContactDto> contactDtoList = new LinkedList<>();
 
         for (ContactEntity contact : contactList) {
             ContactDto Dto = new ContactDto(contact);
             contactDtoList.add(Dto);
         }
+
         int allsize = contactDao.count();
 
-        ContactListResponse contactResponce = new ContactListResponse(contactDtoList, allsize);
-        return contactResponce;
+        return new ContactListResponse(contactDtoList, allsize);
     }
 
     @Override
