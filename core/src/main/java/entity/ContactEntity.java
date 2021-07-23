@@ -11,10 +11,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -26,8 +24,7 @@ import java.util.Collection;
 @Table(name = "contact")
 @Data
 @Accessors(chain = true)
-public class ContactEntity implements Serializable { //todo убрать неиспользуемые импорты
-    @Id
+public class ContactEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
@@ -53,7 +50,7 @@ public class ContactEntity implements Serializable { //todo убрать неи�
 
     @Column(name = "marital_status")
     @Enumerated(EnumType.STRING)
-    private Maritalstatus maritalStatus;
+    private MaritalStatus maritalStatus;
 
     @Column(name = "website", length = 50)
     private String website;
@@ -80,7 +77,4 @@ public class ContactEntity implements Serializable { //todo убрать неи�
 
     @Column(name="avatar_url", length = 100)
     private String avatarUrl;
-
-
-
 }

@@ -3,7 +3,7 @@ import entity.AttachmentEntity;
 import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
 import entity.Gender;
-import entity.Maritalstatus;
+import entity.MaritalStatus;
 import entity.PhoneEntity;
 import entity.PhoneType;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class RequestContactDto {
     private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
-    private Maritalstatus maritalStatus;
+    private MaritalStatus maritalStatus;
     @Length(max = 50, message = "workplace should not be greater than 50")
     private String website;
     @Email(message = "its not be email")
@@ -73,7 +73,7 @@ public class RequestContactDto {
         contactEntity.setDataBirthday(dataBirthday);
         contactEntity.setGender(Gender.valueOf(gender.toString()));
         contactEntity.setCitizenship(citizenship);
-        contactEntity.setMaritalStatus(Maritalstatus.valueOf(maritalStatus.toString()));
+        contactEntity.setMaritalStatus(MaritalStatus.valueOf(maritalStatus.toString()));
         contactEntity.setWebsite(website);
         contactEntity.setEmail(email);
         contactEntity.setWorkplace(workplace);

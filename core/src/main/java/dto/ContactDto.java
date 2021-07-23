@@ -1,7 +1,7 @@
 package dto;
 import entity.ContactEntity;
 import entity.Gender;
-import entity.Maritalstatus;
+import entity.MaritalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class ContactDto {
     private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
-    private Maritalstatus maritalStatus;
+    private MaritalStatus maritalStatus;
     @Length(max = 50, message = "workplace should not be greater than 50")
     private String website;
     @Email(message = "its not be email")
