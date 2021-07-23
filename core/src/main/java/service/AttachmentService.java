@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface AttachmentService {
 
-    Resource getFileById(int id);
-
     AttachmentDto getById(int id);
 
     String createNewAttachment(MultipartFile file, String name);
@@ -19,5 +17,5 @@ public interface AttachmentService {
 
     void updateAttachment(MultipartFile file, String name, int id);
 
-    void getFile(String key, HttpServletResponse responce);
+    Resource getFile(String key);
 }
