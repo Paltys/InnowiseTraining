@@ -50,6 +50,11 @@ public class PhoneDao extends AbstractDao<PhoneEntity>{
     }
 
     @Override
+    public List<PhoneEntity> getAll() {
+        return null;
+    }
+
+    @Override
     public int count() {
         return 0;
     }

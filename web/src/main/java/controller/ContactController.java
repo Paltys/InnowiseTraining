@@ -1,9 +1,9 @@
 package controller;
 
-import exceptions.EntityNotFoundException;
 import dto.ContactDto;
 import dto.RequestContactDto;
 import dto.SearchContactDto;
+import exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import service.ContactService;
+import service.impl.MailSender;
 import service.response.ContactListResponse;
 
 @RestController
@@ -24,9 +25,11 @@ import service.response.ContactListResponse;
 public class ContactController {
 
     private final ContactService contactService;
+    private final MailSender mailSender;
 
-    public ContactController(ContactService contactService) {
+    public ContactController(ContactService contactService, MailSender mailSender) {
         this.contactService = contactService;
+        this.mailSender=mailSender;
     }
 
     @GetMapping
@@ -43,6 +46,8 @@ public class ContactController {
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) throws EntityNotFoundException {
             ContactDto contactDto = contactService.getById(id);
+//            mailSender.sendMail("Paltys01@yandex.ru","HappyBirthday","Happy birthday"+contactDto.getFirstName()+" "
+//            +contactDto.getLastName());
             return new ResponseEntity<>(contactDto, HttpStatus.OK);
 }
 
@@ -62,5 +67,4 @@ public class ContactController {
         contactService.updateContact(requestContactDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

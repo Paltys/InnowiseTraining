@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,10 +55,25 @@ public class ContactDao extends AbstractDao<ContactEntity> {
     public List<ContactEntity> getAll(int size, int number) {
         int maxResult = size;
         int startCount = number * size;
-
         String sql = "FROM ContactEntity";
         Session session = getSession();
         List<ContactEntity> list = session.createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+        closeCurrentSession(session);
+        return list;
+    }
+
+    public List<ContactEntity> getAll() {
+        String sql = "FROM ContactEntity";
+        Session session = getSession();
+        List<ContactEntity> list = session.createQuery(sql).list();
+        closeCurrentSession(session);
+        return list;
+    }
+
+    public List<ContactEntity> getBirthdayContact(LocalDate today){
+        String sql = "FROM ContactEntity WHERE dataBirthday="+today;
+        Session session = getSession();
+        List<ContactEntity> list = session.createQuery(sql).list();
         closeCurrentSession(session);
         return list;
     }
@@ -69,6 +85,7 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         closeCurrentSession(session);
         return allsize;
     }
+
     public List<ContactEntity> findBy (int size, int number, SearchContactDto searchContactDto){
         Session session = getSession();
         CriteriaBuilder criteriaBuilder=session.getCriteriaBuilder();

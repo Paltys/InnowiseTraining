@@ -38,6 +38,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
     @SuppressWarnings("unchecked")
     abstract public List<T> getAll(int count, int page);
 
+    abstract public List<T> getAll();
+
     @Override
     public Optional<T> getById(int id) {
         return (Optional<T>) getSession().get(this.entityClass, id);

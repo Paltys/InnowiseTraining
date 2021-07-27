@@ -13,11 +13,11 @@ import java.io.IOException;
 @ControllerAdvice
 class ExceptionController extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<?> responseException(Exception e) {
-        ErrorResponse errorResponse = new ErrorResponse(500,"Sorry man");
-        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    public ResponseEntity<?> responseException(Exception e) {
+//        ErrorResponse errorResponse = new ErrorResponse(500,"Sorry man");
+//        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
     @ExceptionHandler(value = IOException.class)
     public ResponseEntity<?> responseException(IOException e) {
         ErrorResponse errorResponse = new ErrorResponse(400, "File is bad");
