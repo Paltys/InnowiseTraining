@@ -1,13 +1,14 @@
 package service.impl;
 
-import exceptions.EntityNotFoundException;
 import dao.Dao;
 import dto.ContactDto;
 import dto.RequestContactDto;
 import dto.SearchContactDto;
 import entity.AttachmentEntity;
+import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
 import entity.PhoneEntity;
+import exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,16 +59,30 @@ public class ContactServiceImpl implements ContactService {
         return contactDto;
     }
 
-    public int createNewContact(RequestContactDto requestContactDto) {
-        contactDao.create(requestContactDto.getContactEntity());
+    public int createNewContact(ContactDto contactDto) {
+        ContactEntity contactEntity = new ContactEntity();
+        ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(
+                contactDto.getCountry(),contactDto.getTown(), contactDto.getStreet(), contactDto.getHouse(), contactDto.getFlat(), contactDto.getAddressIndex());
+        contactEntity.setFirstName(contactDto.getFirstName());
+        contactEntity.setLastName(contactDto.getLastName());
+        contactEntity.setMiddleName(contactDto.getMiddleName());
+        contactEntity.setDataBirthday(contactDto.getDataBirthday());
+        contactEntity.setGender(contactDto.getGender());
+        contactEntity.setCitizenship(contactDto.getCitizenship());
+        contactEntity.setMaritalStatus(contactDto.getMaritalStatus());
+        contactEntity.setWebsite(contactDto.getWebsite());
+        contactEntity.setEmail(contactDto.getEmail());
+        contactEntity.setWorkplace(contactDto.getWorkplace());
+        contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
+        contactEntity.setAvatarUrl(contactDto.getAvatarUrl());
+        return (int)contactDao.create(contactEntity);
 
-        for (PhoneEntity phone : requestContactDto.getPhoneEntity()) {
-            phoneDao.create(phone);
-        }
-        for (AttachmentEntity attachment : requestContactDto.getAttachmentEntity()) {
-            attachmentDao.create(attachment);
-        }
-        return 5;
+//        for (PhoneEntity phone : contactDto.getPhoneEntity()) {
+//            phoneDao.create(phone);
+//        }
+//        for (AttachmentEntity attachment : contactDto.getAttachmentEntity()) {
+//            attachmentDao.create(attachment);
+//        }
 
     }
 

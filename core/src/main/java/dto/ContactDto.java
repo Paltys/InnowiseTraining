@@ -1,4 +1,5 @@
 package dto;
+
 import entity.ContactEntity;
 import entity.Gender;
 import entity.MaritalStatus;
@@ -6,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -15,8 +17,6 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactDto {
-    @NotNull(message = "id cannot be null")
-    @Length(message = "id should not be greater than 2147483647" )
     private int id;
     @NotNull(message = "firstName cannot be null")
     @Length(max = 50, message = "first name should not be greater than 50")

@@ -32,7 +32,7 @@ public class ContactDao extends AbstractDao<ContactEntity> {
     @Override
     public Serializable create(ContactEntity obj) {
         Session session = getSession();
-        Serializable id=session.save(obj);
+        Serializable id = session.save(obj);
         closeCurrentSession(session);
         return id;
     }
