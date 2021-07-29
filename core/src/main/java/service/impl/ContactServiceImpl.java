@@ -1,6 +1,6 @@
 package service.impl;
 
-
+import exceptions.EntityNotFoundException;
 import dao.Dao;
 import dto.ContactDto;
 import dto.RequestContactDto;
@@ -35,9 +35,7 @@ public class ContactServiceImpl implements ContactService {
 
 
     public ContactListResponse getAllContact(int size, int number) {
-
         List<ContactEntity> contactList = contactDao.getAll(size, number);
-
         List<ContactDto> contactDtoList = new ArrayList<>();
 
         for (ContactEntity contact : contactList) {
@@ -45,16 +43,15 @@ public class ContactServiceImpl implements ContactService {
             contactDtoList.add(contactDto);
         }
         int allsize = contactDao.count();
-
         ContactListResponse contactResponce = new ContactListResponse(contactDtoList, allsize);
         return contactResponce;
     }
 
     @Override
-    public ContactDto getById(int id) {
+    public ContactDto getById(int id) throws EntityNotFoundException {
         Optional<ContactEntity> optionalContactEntity = contactDao.getById(id);
-        if (!optionalContactEntity.isPresent()) {
-            throw new RuntimeException();
+        if (optionalContactEntity.isEmpty()) {
+            throw new EntityNotFoundException("contact");
         }
         ContactEntity contact = optionalContactEntity.get();
         ContactDto contactDto = new ContactDto(contact);
@@ -67,20 +64,18 @@ public class ContactServiceImpl implements ContactService {
         for (PhoneEntity phone : requestContactDto.getPhoneEntity()) {
             phoneDao.create(phone);
         }
-
         for (AttachmentEntity attachment : requestContactDto.getAttachmentEntity()) {
             attachmentDao.create(attachment);
         }
-
         return 5;
 
     }
 
     @Override
-    public void deleteContact(int id) {
+    public void deleteContact(int id) throws EntityNotFoundException {
         Optional<ContactEntity> optionalContactEntity = contactDao.getById(id);
-        if (!optionalContactEntity.isPresent()) {
-            throw new RuntimeException();
+        if (optionalContactEntity.isEmpty()) {
+            throw new EntityNotFoundException("contact");
         }
         ContactEntity contact = optionalContactEntity.get();
         contactDao.delete(contact);
@@ -89,47 +84,26 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) {
         List<ContactEntity> contactList = contactDao.findBy(size, number, searchContactDto);
-
         List<ContactDto> contactDtoList = new LinkedList<>();
 
         for (ContactEntity contact : contactList) {
             ContactDto Dto = new ContactDto(contact);
             contactDtoList.add(Dto);
         }
-
         int allsize = contactDao.count();
-
         return new ContactListResponse(contactDtoList, allsize);
     }
 
     @Override
-    public void updateContact(RequestContactDto requestContactDto, int id) {
-//        ContactEntity contactEntity = new ContactEntity();
-//        ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(obj.getCountry(),obj.getTown(),obj.getStreet(),obj.getHouse(),obj.getFlat(),obj.getAddressIndex());
-//        contactEntity.setId(id);
-//        contactEntity.setFirstName(obj.getFirstName());
-//        contactEntity.setLastName(obj.getLastName());
-//        contactEntity.setMiddleName(obj.getMiddleName());
-//        contactEntity.setDataBirthday(Instant.parse(obj.getDataBirthday()));
-//        contactEntity.setGender(Gender.valueOf(obj.getGender()));
-//        contactEntity.setCitizenship(obj.getCitizenship());
-//        contactEntity.setMaritalStatus(Maritalstatus.valueOf(obj.getMaritalStatus()));
-//        contactEntity.setWebsite(obj.getWebsite());
-//        contactEntity.setEmail(obj.getEmail());
-//        contactEntity.setWorkplace(obj.getWorkplace());
-//        contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
-
+    public void updateContact(RequestContactDto requestContactDto, int id) throws EntityNotFoundException {
         contactDao.update(requestContactDto.getContactEntity());
 
         for (PhoneEntity phone : requestContactDto.getPhoneEntity()) {
             phoneDao.update(phone);
         }
-
         for (AttachmentEntity attachment : requestContactDto.getAttachmentEntity()) {
             attachment.setUpdateDate(Instant.now());
             attachmentDao.update(attachment);
         }
-
-
     }
 }

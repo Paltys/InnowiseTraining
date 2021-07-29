@@ -4,8 +4,6 @@ package controller;
 import dto.PhoneDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +32,7 @@ public class PhoneController {
             PhoneDto phoneDto = phoneService.getById(id);
             return new ResponseEntity<>(phoneDto, HttpStatus.OK);
         } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404", "Sorry. Phone not found");
+            ErrorResponse errorResponse = new ErrorResponse(404, "Sorry. Phone not found");
 
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
@@ -50,7 +48,7 @@ public class PhoneController {
         try {
             phoneService.deletePhone(id);
         } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404","Sorry. Phone not found");
+            ErrorResponse errorResponse = new ErrorResponse(404,"Sorry. Phone not found");
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -61,7 +59,7 @@ public class PhoneController {
         try {
             phoneService.updatePhone(phoneDto,id);
         } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404","Sorry. Phone not found");
+            ErrorResponse errorResponse = new ErrorResponse(404,"Sorry. Phone not found");
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

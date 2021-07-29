@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.EntityNotFoundException;
 import dto.ContactDto;
 import dto.RequestContactDto;
 import dto.SearchContactDto;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import service.ContactService;
 import service.response.ContactListResponse;
-import service.response.ErrorResponse;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -33,48 +33,33 @@ public class ContactController {
     public ContactListResponse retrieveList(@RequestParam int size, @RequestParam int number) {
         return contactService.getAllContact(size, number);
     }
+
     @PostMapping("/find")
     public ContactListResponse findBy(@RequestParam int size, @RequestParam int number,
-                                              @Validated @RequestBody SearchContactDto searchContactDto) {
+                                      @Validated @RequestBody SearchContactDto searchContactDto) {
         return contactService.findBy(size, number, searchContactDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> retrieveById(@PathVariable int id) {
-        try {
+    public ResponseEntity<?> retrieveById(@PathVariable int id) throws EntityNotFoundException {
             ContactDto contactDto = contactService.getById(id);
-            return new ResponseEntity<>(contactDto,HttpStatus.OK);
-        } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404","Sorry. Contact not found");
-
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
-    }
+            return new ResponseEntity<>(contactDto, HttpStatus.OK);
+}
 
     @PostMapping
-    public int createContact( @Validated @RequestBody RequestContactDto requestContactDto){
+    public int createContact(@Validated @RequestBody RequestContactDto requestContactDto) {
         return contactService.createNewContact(requestContactDto);
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<?> deleteContact(@PathVariable int id) {
-        try {
-            contactService.deleteContact(id);
-        } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404","Sorry. Contact not found");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> deleteContact(@PathVariable int id) throws EntityNotFoundException {
+        contactService.deleteContact(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>updateContact( @Validated @RequestBody RequestContactDto requestContactDto,@PathVariable int id){
-        try {
-            contactService.updateContact(requestContactDto,id);
-        } catch (RuntimeException e) {
-            ErrorResponse errorResponse = new ErrorResponse("404","Sorry. Contact not found");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> updateContact(@Validated @RequestBody RequestContactDto requestContactDto, @PathVariable int id) throws EntityNotFoundException {
+        contactService.updateContact(requestContactDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

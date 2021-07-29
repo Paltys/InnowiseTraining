@@ -1,5 +1,6 @@
 package service.impl;
 
+import exceptions.EntityNotFoundException;
 import dao.Dao;
 import dto.AttachmentDto;
 import entity.AttachmentEntity;
@@ -80,10 +81,10 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public void deleteAttachment(int id) {
+    public void deleteAttachment(int id) throws EntityNotFoundException {
         Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(id);
-        if (!optionalAttachmentEntity.isPresent()) {
-            throw new RuntimeException();
+        if (optionalAttachmentEntity.isEmpty()) {
+            throw new EntityNotFoundException("attachment");
         }
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
         attachmentEntity.setDeleteDate(Instant.now());
@@ -94,17 +95,14 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public void updateAttachment(MultipartFile file, String name, int id) {
         Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(id);
-        if (!optionalAttachmentEntity.isPresent()) {
+        if (optionalAttachmentEntity.isEmpty()) {
             throw new RuntimeException();
         }
-
         String fileName = file.getOriginalFilename();
-
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
         attachmentEntity.setName(fileName);
         attachmentEntity.setUpdateDate(Instant.now());
         attachmentEntity.setComment("");
-
         attachmentDao.update(attachmentEntity);
     }
 

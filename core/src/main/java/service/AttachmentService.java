@@ -1,10 +1,9 @@
 package service;
 
+import exceptions.EntityNotFoundException;
 import dto.AttachmentDto;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 
 
 public interface AttachmentService {
@@ -13,7 +12,7 @@ public interface AttachmentService {
 
     String createNewAttachment(MultipartFile file, String name);
 
-    void deleteAttachment(int id);
+    void deleteAttachment(int id) throws EntityNotFoundException;
 
     void updateAttachment(MultipartFile file, String name, int id);
 
