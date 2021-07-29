@@ -12,7 +12,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,13 +69,13 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         return list;
     }
 
-    public List<ContactEntity> getBirthdayContact(LocalDate today){
-        String sql = "FROM ContactEntity WHERE dataBirthday="+today;
-        Session session = getSession();
-        List<ContactEntity> list = session.createQuery(sql).list();
-        closeCurrentSession(session);
-        return list;
-    }
+//    public List<ContactEntity> getBirthdayContact(LocalDate today){
+//        String sql = "FROM ContactEntity WHERE dataBirthday="+today;
+//        Session session = getSession();
+//        List<ContactEntity> list = session.createQuery(sql).list();
+//        closeCurrentSession(session);
+//        return list;
+//    }
 
     public int count() {
         String sql = "FROM ContactEntity";

@@ -111,6 +111,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void updateContact(RequestContactDto requestContactDto, int id) throws EntityNotFoundException {
+
         contactDao.update(requestContactDto.getContactEntity());
 
         for (PhoneEntity phone : requestContactDto.getPhoneEntity()) {

@@ -1,6 +1,5 @@
 package service;
 
-
 import exceptions.EntityNotFoundException;
 import dto.ContactDto;
 import dto.RequestContactDto;

@@ -1,11 +1,15 @@
 package dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Violation {
 
-    private final String fieldName;
+    private  String fieldName;
 
-    private final String message;
+    private  String message;
 }

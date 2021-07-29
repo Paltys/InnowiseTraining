@@ -1,5 +1,8 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import entity.Gender;
+import entity.MaritalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +23,12 @@ public class SearchContactDto {
     @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
     @Past(message = "birthday data should not be future")
-    private String dataBirthday;
-    private String gender;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+    private Instant dataBirthday;
+    private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
-    private String maritalStatus;
+    private MaritalStatus maritalStatus;
     @Length(max = 50, message = "workplace should not be greater than 50")
     private String website;
     @Email(message = "its not be email")
@@ -61,12 +66,10 @@ public class SearchContactDto {
         return prepareSearch(middleName);
     }
 
-    public String getSearchDataBirthday() {
-        return prepareSearch(dataBirthday);
-    }
+    public String getSearchDataBirthday() {return String.valueOf(dataBirthday); }
 
     public String getSearchGender() {
-        return prepareSearch(gender);
+        return prepareSearch(gender.toString());
     }
 
     public String getSearchCitizenship() {
@@ -74,7 +77,7 @@ public class SearchContactDto {
     }
 
     public String getSearchMaritalStatus() {
-        return prepareSearch(maritalStatus);
+        return prepareSearch(maritalStatus.toString());
     }
 
     public String getSearchWebsite() {
