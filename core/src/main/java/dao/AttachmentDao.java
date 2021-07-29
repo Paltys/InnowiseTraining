@@ -43,6 +43,10 @@ public class AttachmentDao extends AbstractDao<AttachmentEntity> {
         return Optional.ofNullable(attachmentEntity);
     }
 
+    @Override
+    public List<AttachmentEntity> getAll() {
+        return null;
+    }
 
     @Override
     public List<AttachmentEntity> getAll(int count, int page) {

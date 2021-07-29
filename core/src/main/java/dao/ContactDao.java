@@ -31,7 +31,7 @@ public class ContactDao extends AbstractDao<ContactEntity> {
     @Override
     public Serializable create(ContactEntity obj) {
         Session session = getSession();
-        Serializable id=session.save(obj);
+        Serializable id = session.save(obj);
         closeCurrentSession(session);
         return id;
     }
@@ -54,13 +54,28 @@ public class ContactDao extends AbstractDao<ContactEntity> {
     public List<ContactEntity> getAll(int size, int number) {
         int maxResult = size;
         int startCount = number * size;
-
         String sql = "FROM ContactEntity";
         Session session = getSession();
         List<ContactEntity> list = session.createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
         closeCurrentSession(session);
         return list;
     }
+
+    public List<ContactEntity> getAll() {
+        String sql = "FROM ContactEntity";
+        Session session = getSession();
+        List<ContactEntity> list = session.createQuery(sql).list();
+        closeCurrentSession(session);
+        return list;
+    }
+
+//    public List<ContactEntity> getBirthdayContact(LocalDate today){
+//        String sql = "FROM ContactEntity WHERE dataBirthday="+today;
+//        Session session = getSession();
+//        List<ContactEntity> list = session.createQuery(sql).list();
+//        closeCurrentSession(session);
+//        return list;
+//    }
 
     public int count() {
         String sql = "FROM ContactEntity";
@@ -69,6 +84,7 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         closeCurrentSession(session);
         return allsize;
     }
+
     public List<ContactEntity> findBy (int size, int number, SearchContactDto searchContactDto){
         Session session = getSession();
         CriteriaBuilder criteriaBuilder=session.getCriteriaBuilder();

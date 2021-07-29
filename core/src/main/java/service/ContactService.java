@@ -1,6 +1,5 @@
 package service;
 
-
 import exceptions.EntityNotFoundException;
 import dto.ContactDto;
 import dto.RequestContactDto;
@@ -13,7 +12,7 @@ public interface ContactService {
 
     ContactDto getById(int id) throws EntityNotFoundException;
 
-    int createNewContact(RequestContactDto obj);
+    int createNewContact(ContactDto obj);
 
     void deleteContact(int id) throws EntityNotFoundException;
 

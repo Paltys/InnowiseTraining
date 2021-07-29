@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "4ce11b9b-ef3b-4999-a829-a9ac2a87ca18",
+		"name": "contact-java-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "search contact list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": null,\r\n    \"lastName\": null,\r\n    \"middleName\": \"Petrovna\",\r\n    \"dataBirthday\": null,\r\n    \"gender\": null,\r\n    \"citizenship\": null,\r\n    \"maritalStatus\": null,\r\n    \"website\": null,\r\n    \"email\": null,\r\n    \"workplace\": null,\r\n    \"country\": null,\r\n    \"town\": null,\r\n    \"street\": null,\r\n    \"house\": null,\r\n    \"flat\": null,\r\n    \"addressIndex\": null,\r\n    \"avatarUrl\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/find?size=0&number=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						"find"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "0"
+						},
+						{
+							"key": "number",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload file",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"contentType": "multipart/form-data",
+							"type": "file",
+							"src": "/C:/Users/Palty/OneDrive/Desktop/kartinka.jpg"
+						},
+						{
+							"key": "name",
+							"value": "attachment",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/file",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"file"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get contact by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \r\n    \"idContact\": 5,\r\n    \"countryCode\": \"375\",\r\n    \"operatorCode\": \"29\",\r\n    \"phone\": \"555555\",\r\n    \"type\": \"HOME\",\r\n    \"description\": \"11111111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/file/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"file",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "insert new contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"sssss\",\r\n    \"lastName\": \"ddddddd\",\r\n    \"middleName\": \"sssssss\",\r\n    \"dataBirthday\": 361742400.000000000,\r\n    \"gender\": \"MALE\",\r\n    \"citizenship\": \"Belarus\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"website\": \"www.dfdfdfdf.com\",\r\n    \"email\": \"123\",\r\n    \"workplace\": \"More Sity\",\r\n    \"country\": \"Belarus\",\r\n    \"town\": \"Brest\",\r\n    \"street\": \"Lenina\",\r\n    \"house\": \"5\",\r\n    \"flat\": \"6\",\r\n    \"addressIndex\": \"888888\",\r\n    \"avatarUrl\": null\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

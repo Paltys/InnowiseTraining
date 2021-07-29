@@ -18,14 +18,9 @@ public abstract class AbstractDao<T> implements Dao<T> {
                 .getActualTypeArguments()[0];
     }
 
-    protected Session getSession() {
-        return HibernateUtil.getSession();
-    }
+    protected Session getSession() {return HibernateUtil.getSession(); }
 
-    public Serializable create(T obj) {
-        return getSession().save(obj);
-
-    }
+    public Serializable create(T obj) {return getSession().save(obj); }
 
     public void delete(T obj) {
          getSession().delete(obj);
@@ -37,6 +32,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @SuppressWarnings("unchecked")
     abstract public List<T> getAll(int count, int page);
+
+    abstract public List<T> getAll();
 
     @Override
     public Optional<T> getById(int id) {
