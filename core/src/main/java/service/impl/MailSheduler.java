@@ -8,6 +8,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import service.impl.MailSender;
 
 import javax.xml.bind.SchemaOutputResolver;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-@Configuration
+@Service
 @EnableScheduling
 public class MailSheduler {
 
