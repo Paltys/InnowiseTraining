@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class RequestContactDto {
     @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
     @Past(message = "birthday data should not be future")
-    private Instant dataBirthday;
+    private Instant birthday;
     private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
@@ -69,7 +70,7 @@ public class RequestContactDto {
         contactEntity.setFirstName(firstName);
         contactEntity.setLastName(lastName);
         contactEntity.setMiddleName(middleName);
-        contactEntity.setDataBirthday(dataBirthday);
+        contactEntity.setBirthday(birthday);
         contactEntity.setGender(Gender.valueOf(gender.toString()));
         contactEntity.setCitizenship(citizenship);
         contactEntity.setMaritalStatus(MaritalStatus.valueOf(maritalStatus.toString()));

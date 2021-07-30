@@ -9,30 +9,31 @@ import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
 import entity.PhoneEntity;
 import exceptions.EntityNotFoundException;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.ContactService;
 import service.response.ContactListResponse;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
+
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    @Autowired
     private final Dao<ContactEntity> contactDao;
-
-    @Autowired
     private final Dao<PhoneEntity> phoneDao;
-
-    @Autowired
     private final Dao<AttachmentEntity> attachmentDao;
+
+    public ContactServiceImpl(Dao<ContactEntity> contactDao, Dao<PhoneEntity> phoneDao, Dao<AttachmentEntity> attachmentDao) {
+        this.contactDao = contactDao;
+        this.phoneDao = phoneDao;
+        this.attachmentDao = attachmentDao;
+    }
 
 
     public ContactListResponse getAllContact(int size, int number) {
@@ -59,14 +60,14 @@ public class ContactServiceImpl implements ContactService {
         return contactDto;
     }
 
-    public int createNewContact(ContactDto contactDto) {
+    public int createNewContact(ContactDto contactDto) throws ParseException {
         ContactEntity contactEntity = new ContactEntity();
         ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(
                 contactDto.getCountry(),contactDto.getTown(), contactDto.getStreet(), contactDto.getHouse(), contactDto.getFlat(), contactDto.getAddressIndex());
         contactEntity.setFirstName(contactDto.getFirstName());
         contactEntity.setLastName(contactDto.getLastName());
         contactEntity.setMiddleName(contactDto.getMiddleName());
-        contactEntity.setDataBirthday(contactDto.getDataBirthday());
+        contactEntity.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(contactDto.getBirthday()).toInstant());
         contactEntity.setGender(contactDto.getGender());
         contactEntity.setCitizenship(contactDto.getCitizenship());
         contactEntity.setMaritalStatus(contactDto.getMaritalStatus());
@@ -76,14 +77,6 @@ public class ContactServiceImpl implements ContactService {
         contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
         contactEntity.setAvatarUrl(contactDto.getAvatarUrl());
         return (int)contactDao.create(contactEntity);
-
-//        for (PhoneEntity phone : contactDto.getPhoneEntity()) {
-//            phoneDao.create(phone);
-//        }
-//        for (AttachmentEntity attachment : contactDto.getAttachmentEntity()) {
-//            attachmentDao.create(attachment);
-//        }
-
     }
 
     @Override
@@ -97,7 +90,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) {
+    public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) throws ParseException {
         List<ContactEntity> contactList = contactDao.findBy(size, number, searchContactDto);
         List<ContactDto> contactDtoList = new LinkedList<>();
 

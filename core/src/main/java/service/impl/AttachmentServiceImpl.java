@@ -4,7 +4,6 @@ import exceptions.EntityNotFoundException;
 import dao.Dao;
 import dto.AttachmentDto;
 import entity.AttachmentEntity;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -22,59 +21,51 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Optional;
 
-@AllArgsConstructor
 @Service
 public class AttachmentServiceImpl implements AttachmentService {
 
-    @Autowired
     private final Dao<AttachmentEntity> attachmentDao;
+
+    private final static String REALPATH = "root/files";
+
+    @Autowired
+    public AttachmentServiceImpl(Dao<AttachmentEntity> attachmentDao) {
+        this.attachmentDao = attachmentDao;
+    }
 
     @Override
     public AttachmentDto getById(int id) {
         Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(id);
-        if (!optionalAttachmentEntity.isPresent()) {
+        if (optionalAttachmentEntity.isEmpty()) {
             throw new RuntimeException();
         }
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
-        AttachmentDto attachmentDto = new AttachmentDto(attachmentEntity);
-        return attachmentDto;
+        return new AttachmentDto(attachmentEntity);
     }
 
     @Override
-    public String createNewAttachment(MultipartFile file, String name) {
+    public String createNewAttachment(MultipartFile file, String name) throws IOException {
 
-        String fileName = null;
+        String fileName;
 
         if (!file.isEmpty()) {
-            try {
-                fileName = file.getOriginalFilename();
-                String url = "root/files";
-                String fileHost="http://localhost:8080";
-                String apiPath = "/api/file/";
-                String generatedFileName = Instant.now().getEpochSecond()+"-"+ fileName;
-                File dir = new File(url);
+            fileName = file.getOriginalFilename();
+            String fileHost = "http://localhost:8080";
+            String apiPath = "/api/file/";
+            String generatedFileName = Instant.now().getEpochSecond() + "-" + fileName;
+            File dir = new File(REALPATH);
 
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                String fullPath = url+"/"+generatedFileName;
-                Files.copy(file.getInputStream(), Paths.get(fullPath), StandardCopyOption.REPLACE_EXISTING);
-                System.out.println(fullPath);
-                AttachmentEntity attachmentEntity = new AttachmentEntity();
-                attachmentEntity.setName(fileName);
-                attachmentEntity.setUrl(fileHost+apiPath+generatedFileName);
-                attachmentEntity.setLoadDate(Instant.now());
-                attachmentEntity.setUpdateDate(Instant.now());
-                attachmentEntity.setDeleteDate(null);
-                attachmentEntity.setComment("123");
-                attachmentEntity.setType("temp");
-                attachmentDao.create(attachmentEntity);
-
-                return url;
-            } catch (IOException e) {
-                return "Error upload file";
+            if (!dir.exists()) {
+                dir.mkdirs();
             }
+
+            String fullPath = REALPATH + "/" + generatedFileName;
+            String urlUploadFile = fileHost + apiPath + generatedFileName;
+            Files.copy(file.getInputStream(), Paths.get(fullPath), StandardCopyOption.REPLACE_EXISTING);
+            AttachmentEntity attachmentEntity = new AttachmentEntity(fileName, urlUploadFile);
+            attachmentDao.create(attachmentEntity);
+
+            return urlUploadFile;
         } else {
             return "File is Empty";
         }
@@ -93,10 +84,10 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public void updateAttachment(MultipartFile file, String name, int id) {
+    public void updateAttachment(MultipartFile file, String name, int id) throws EntityNotFoundException {
         Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(id);
         if (optionalAttachmentEntity.isEmpty()) {
-            throw new RuntimeException();
+            throw new EntityNotFoundException("attachment");
         }
         String fileName = file.getOriginalFilename();
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
@@ -109,11 +100,10 @@ public class AttachmentServiceImpl implements AttachmentService {
     @SneakyThrows
     @Override
     public Resource getFile(String fileName) {
-        String path = String.format("%s/%s","root/files",fileName);
+        String path = String.format("%s/%s", REALPATH, fileName);
         Path file = Paths.get(path);
-        Resource resource = new UrlResource(file.toUri());
-        return resource;
-        }
+        return new UrlResource(file.toUri());
     }
+}
 
 

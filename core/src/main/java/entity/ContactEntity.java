@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 
 
@@ -40,8 +41,8 @@ public class ContactEntity implements Serializable {
     @Column(name = "middle_name", length = 50)
     private String middleName;
 
-    @Column(name = "data_birthday")
-    private Instant dataBirthday;
+    @Column(name = "birthday")
+    private Instant birthday;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)

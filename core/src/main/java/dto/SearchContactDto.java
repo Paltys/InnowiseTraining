@@ -1,6 +1,5 @@
 package dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.Gender;
 import entity.MaritalStatus;
 import lombok.AllArgsConstructor;
@@ -9,8 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Past;
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -22,9 +19,7 @@ public class SearchContactDto {
     private String lastName;
     @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
-    @Past(message = "birthday data should not be future")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
-    private Instant dataBirthday;
+    private String birthday;
     private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
@@ -51,7 +46,10 @@ public class SearchContactDto {
     private String avatarUrl;
 
     private String prepareSearch(String field) {
-        return String.join("", "%", field.trim(), "%");
+        if(field !=null){
+        return String.join("", "%", field.trim(), "%");}
+        else
+            return null;
     }
 
     public String getSearchFirstName() {
@@ -66,7 +64,7 @@ public class SearchContactDto {
         return prepareSearch(middleName);
     }
 
-    public String getSearchDataBirthday() {return String.valueOf(dataBirthday); }
+    public String getSearchBirthday() {return birthday; }
 
     public String getSearchGender() {
         return prepareSearch(gender.toString());

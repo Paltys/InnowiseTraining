@@ -17,17 +17,17 @@ import java.io.IOException;
 
 
 @RestController
-@RequestMapping("/api/file")
-public class FileUploadController {
+@RequestMapping("/api/files")
+public class FilesController {
 
     private final AttachmentService attachmentService;
 
-    public FileUploadController(AttachmentService attachmentService) {
+    public FilesController(AttachmentService attachmentService) {
         this.attachmentService = attachmentService;
     }
 
     @PostMapping
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) {
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) throws IOException {
 
         String url = null;
         if (!file.isEmpty()) {

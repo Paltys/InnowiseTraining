@@ -1,7 +1,9 @@
 package entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -11,9 +13,11 @@ import java.time.Instant;
 
 
 @Entity
-@Table(name="attachment")
+@Table(name = "attachment")
 @Data
 @Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class AttachmentEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +31,10 @@ public class AttachmentEntity implements Serializable {
     private String url;
 
     @Column(name = "load_date")
-    private Instant loadDate;
+    private Instant loadDate = Instant.now();
 
     @Column(name = "update_date")
-    private Instant updateDate;
+    private Instant updateDate = Instant.now();
 
     @Column(name = "delete_date")
     private Instant deleteDate;
@@ -39,7 +43,11 @@ public class AttachmentEntity implements Serializable {
     private String comment;
 
     @Column(name = "type", length = 50)
-    private String type;
+    private String type = "temp";
 
-
+    public AttachmentEntity(String fileName, String urlUploadFile) {
+        this.name = fileName;
+        this.url = urlUploadFile;
+    }
 }
+
