@@ -12,6 +12,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,14 +71,6 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         return list;
     }
 
-//    public List<ContactEntity> getBirthdayContact(LocalDate today){
-//        String sql = "FROM ContactEntity WHERE dataBirthday="+today;
-//        Session session = getSession();
-//        List<ContactEntity> list = session.createQuery(sql).list();
-//        closeCurrentSession(session);
-//        return list;
-//    }
-
     public int count() {
         String sql = "FROM ContactEntity";
         Session session = getSession();
@@ -85,54 +79,54 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         return allsize;
     }
 
-    public List<ContactEntity> findBy (int size, int number, SearchContactDto searchContactDto){
+    public List<ContactEntity> findBy(int size, int number, SearchContactDto searchContactDto) throws ParseException {
         Session session = getSession();
-        CriteriaBuilder criteriaBuilder=session.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<ContactEntity> criteriaQuery = criteriaBuilder.createQuery(ContactEntity.class);
         Root<ContactEntity> rootContact = criteriaQuery.from(ContactEntity.class);
         List<Predicate> predicateList = buildPredicateList(searchContactDto, criteriaBuilder, rootContact);
         criteriaQuery.select(rootContact).where(criteriaBuilder.and(predicateList.toArray(new Predicate[0])));
-        Query query = session.createQuery(criteriaQuery).setMaxResults(size).setFirstResult(number*size);
+        Query query = session.createQuery(criteriaQuery).setMaxResults(size).setFirstResult(number * size);
         List<ContactEntity> result = query.getResultList();
         return result;
     }
 
     @NotNull
-    private List<Predicate> buildPredicateList(SearchContactDto searchContactDto, CriteriaBuilder criteriaBuilder, Root<ContactEntity> rootContact) {
+    private List<Predicate> buildPredicateList(SearchContactDto searchContactDto, CriteriaBuilder criteriaBuilder, Root<ContactEntity> rootContact) throws ParseException {
         List<Predicate> allPredicates = new ArrayList<>();
-        if (searchContactDto.getSearchFirstName()!=null)
+        if (searchContactDto.getSearchFirstName() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("firstName"), searchContactDto.getSearchFirstName()));
-        else if (searchContactDto.getSearchLastName()!=null)
+        else if (searchContactDto.getSearchLastName() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("lastName"), searchContactDto.getSearchLastName()));
-        else if (searchContactDto.getSearchMiddleName()!=null)
+        else if (searchContactDto.getSearchMiddleName() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("middleName"), searchContactDto.getSearchMiddleName()));
-        else if (searchContactDto.getSearchDataBirthday()!=null)
-            allPredicates.add(criteriaBuilder.equal(rootContact.get("dataBirthday"), searchContactDto.getSearchDataBirthday()));
-        else if (searchContactDto.getSearchGender()!=null)
+        else if (searchContactDto.getSearchBirthday() != null)
+            allPredicates.add(criteriaBuilder.equal(rootContact.get("birthday"), new SimpleDateFormat("yyyy-MM-dd").parse(searchContactDto.getSearchBirthday()).toInstant()));
+        else if (searchContactDto.getSearchGender() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("gender"), searchContactDto.getSearchGender()));
-        else if (searchContactDto.getSearchCitizenship()!=null)
+        else if (searchContactDto.getSearchCitizenship() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("citizenship"), searchContactDto.getSearchCitizenship()));
-        else if (searchContactDto.getSearchMaritalStatus()!=null)
+        else if (searchContactDto.getSearchMaritalStatus() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("maritalStatus"), searchContactDto.getSearchMaritalStatus()));
-        else if (searchContactDto.getSearchWebsite()!=null)
+        else if (searchContactDto.getSearchWebsite() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("website"), searchContactDto.getSearchWebsite()));
-        else if (searchContactDto.getSearchEmail()!=null)
+        else if (searchContactDto.getSearchEmail() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("email"), searchContactDto.getSearchEmail()));
-        else if (searchContactDto.getSearchWorkplace()!=null)
+        else if (searchContactDto.getSearchWorkplace() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("workplace"), searchContactDto.getSearchWorkplace()));
-        else if (searchContactDto.getSearchCountry()!=null)
+        else if (searchContactDto.getSearchCountry() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("country"), searchContactDto.getSearchCountry()));
-        else if (searchContactDto.getSearchTown()!=null)
+        else if (searchContactDto.getSearchTown() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("town"), searchContactDto.getSearchTown()));
-        else if (searchContactDto.getSearchStreet()!=null)
+        else if (searchContactDto.getSearchStreet() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("street"), searchContactDto.getSearchStreet()));
-        else if (searchContactDto.getSearchHouse()!=null)
+        else if (searchContactDto.getSearchHouse() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("house"), searchContactDto.getSearchHouse()));
-        else if (searchContactDto.getSearchFlat()!=null)
+        else if (searchContactDto.getSearchFlat() != null)
             allPredicates.add(criteriaBuilder.like(rootContact.get("flat"), searchContactDto.getSearchFlat()));
-        else if (searchContactDto.getSearchAddressIndex()!=null)
+        else if (searchContactDto.getSearchAddressIndex() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("addressIndex"), searchContactDto.getSearchAddressIndex()));
-        else if (searchContactDto.getSearchAvatarUrl()!=null)
+        else if (searchContactDto.getSearchAvatarUrl() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("avatarUrl"), searchContactDto.getSearchAvatarUrl()));
         return allPredicates;
     }

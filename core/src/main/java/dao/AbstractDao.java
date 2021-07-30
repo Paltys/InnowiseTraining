@@ -1,6 +1,7 @@
 package dao;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     @Override
-    abstract public List<T> findBy(int count, int page, SearchContactDto searchContactDto);
+    abstract public List<T> findBy(int count, int page, SearchContactDto searchContactDto) throws ParseException;
 
     public void closeCurrentSession(Session session){
         HibernateUtil.closeSession(session);

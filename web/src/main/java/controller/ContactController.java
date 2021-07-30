@@ -22,6 +22,7 @@ import service.ContactService;
 import service.response.ContactListResponse;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 
 @RestController
@@ -41,7 +42,7 @@ public class ContactController {
 
     @PostMapping("/find")
     public ContactListResponse findBy(@RequestParam int size, @RequestParam int number,
-                                      @Valid @RequestBody SearchContactDto searchContactDto, BindingResult bindingResult) throws ViolationErrorCustom {
+                                      @Valid @RequestBody SearchContactDto searchContactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
         if (bindingResult.getErrorCount() > 0) {
             FieldError fieldError = bindingResult.getFieldErrors().get(0);
             throw new ViolationErrorCustom(fieldError.getDefaultMessage());
@@ -56,11 +57,8 @@ public class ContactController {
     }
 
     @PostMapping
-    public int createContact(@Valid @RequestBody ContactDto contactDto, BindingResult bindingResult) throws ViolationErrorCustom {
-        if (bindingResult.getErrorCount() > 0) {
-            FieldError fieldError = bindingResult.getFieldErrors().get(0);
-            throw new ViolationErrorCustom(fieldError.getDefaultMessage());
-        }
+    public int createContact(@Valid @RequestBody ContactDto contactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
+        checkValidation(bindingResult);
         return contactService.createNewContact(contactDto);
     }
 
@@ -72,11 +70,15 @@ public class ContactController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult, @PathVariable int id) throws EntityNotFoundException, ViolationErrorCustom {
+        checkValidation(bindingResult);
+        contactService.updateContact(requestContactDto, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private void checkValidation (BindingResult bindingResult) throws ViolationErrorCustom {
         if (bindingResult.getErrorCount() > 0) {
             FieldError fieldError = bindingResult.getFieldErrors().get(0);
             throw new ViolationErrorCustom(fieldError.getDefaultMessage());
         }
-        contactService.updateContact(requestContactDto, id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

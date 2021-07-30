@@ -10,8 +10,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Data
 @NoArgsConstructor
@@ -26,8 +26,7 @@ public class ContactDto {
     private String lastName;
     @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
-    @Past(message = "birthday data should not be future")
-    private Instant dataBirthday;
+    private String birthday;
     private Gender gender;
     @Length(max = 50, message = "citizenship should not be greater than 50")
     private String citizenship;
@@ -58,7 +57,7 @@ public class ContactDto {
         firstName = contact.getFirstName();
         lastName = contact.getLastName();
         middleName = contact.getMiddleName();
-        dataBirthday = contact.getDataBirthday();
+        birthday = LocalDate.ofInstant(contact.getBirthday(),ZoneId.systemDefault()).toString();
         gender = contact.getGender();
         citizenship = contact.getCitizenship();
         maritalStatus = contact.getMaritalStatus();
