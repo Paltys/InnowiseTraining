@@ -1,9 +1,9 @@
 package service.impl;
 
-import exceptions.EntityNotFoundException;
 import dao.Dao;
 import dto.AttachmentDto;
 import entity.AttachmentEntity;
+import exceptions.EntityNotFoundException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,14 +46,14 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public String createNewAttachment(MultipartFile file, String name) throws IOException {
+    public int createNewAttachment(MultipartFile file, String name) throws IOException {
 
         String fileName;
 
         if (!file.isEmpty()) {
             fileName = file.getOriginalFilename();
             String fileHost = "http://localhost:8080";
-            String apiPath = "/api/file/";
+            String apiPath = "/api/files/";
             String generatedFileName = Instant.now().getEpochSecond() + "-" + fileName;
             File dir = new File(REALPATH);
 
@@ -63,11 +65,10 @@ public class AttachmentServiceImpl implements AttachmentService {
             String urlUploadFile = fileHost + apiPath + generatedFileName;
             Files.copy(file.getInputStream(), Paths.get(fullPath), StandardCopyOption.REPLACE_EXISTING);
             AttachmentEntity attachmentEntity = new AttachmentEntity(fileName, urlUploadFile);
-            attachmentDao.create(attachmentEntity);
 
-            return urlUploadFile;
+            return (int) attachmentDao.create(attachmentEntity);
         } else {
-            return "File is Empty";
+            return 0;
         }
     }
 
@@ -84,16 +85,16 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public void updateAttachment(MultipartFile file, String name, int id) throws EntityNotFoundException {
-        Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(id);
+    public void updateAttachment(AttachmentDto attachmentDto, int contactId) throws EntityNotFoundException {
+        Optional<AttachmentEntity> optionalAttachmentEntity = attachmentDao.getById(attachmentDto.getId());
         if (optionalAttachmentEntity.isEmpty()) {
             throw new EntityNotFoundException("attachment");
         }
-        String fileName = file.getOriginalFilename();
         AttachmentEntity attachmentEntity = optionalAttachmentEntity.get();
-        attachmentEntity.setName(fileName);
+        attachmentEntity.setName(attachmentDto.getName());
         attachmentEntity.setUpdateDate(Instant.now());
-        attachmentEntity.setComment("");
+        attachmentEntity.setComment(attachmentDto.getComments());
+        attachmentEntity.setType("contact_" + contactId);
         attachmentDao.update(attachmentEntity);
     }
 
@@ -103,6 +104,17 @@ public class AttachmentServiceImpl implements AttachmentService {
         String path = String.format("%s/%s", REALPATH, fileName);
         Path file = Paths.get(path);
         return new UrlResource(file.toUri());
+    }
+
+    @Override
+    public List<AttachmentDto> getByContactId(int id) {
+        List<AttachmentEntity> attachmentEntityList = attachmentDao.getByContactId(id);
+        List<AttachmentDto> attachmentDtoList = new ArrayList<>();
+        for (AttachmentEntity attachmentEntity : attachmentEntityList) {
+            AttachmentDto attachmentDto = new AttachmentDto(attachmentEntity);
+            attachmentDtoList.add(attachmentDto);
+        }
+        return attachmentDtoList;
     }
 }
 

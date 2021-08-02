@@ -16,4 +16,6 @@ public interface Dao<T> {
     int count();
     List<T> findBy(int count, int page, SearchContactDto searchContactDto) throws ParseException;
     List<T> getAll();
+
+    List<T> getByContactId(int id);
 }

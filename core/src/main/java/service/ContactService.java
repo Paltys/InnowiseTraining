@@ -12,13 +12,13 @@ public interface ContactService {
 
     ContactListResponse getAllContact(int size, int number);
 
-    ContactDto getById(int id) throws EntityNotFoundException;
+    RequestContactDto getById(int id) throws EntityNotFoundException;
 
-    int createNewContact(ContactDto obj) throws ParseException;
+    int createNewContact(RequestContactDto obj) throws ParseException, EntityNotFoundException;
 
     void deleteContact(int id) throws EntityNotFoundException;
 
-    void updateContact(RequestContactDto obj, int id) throws EntityNotFoundException;
+    void updateContact(RequestContactDto obj, int id) throws EntityNotFoundException, ParseException;
 
     ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) throws ParseException;
 }

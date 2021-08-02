@@ -71,6 +71,11 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         return list;
     }
 
+    @Override
+    public List<ContactEntity> getByContactId(int id) {
+        return null;
+    }
+
     public int count() {
         String sql = "FROM ContactEntity";
         Session session = getSession();

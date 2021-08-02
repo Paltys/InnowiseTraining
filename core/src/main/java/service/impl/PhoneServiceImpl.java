@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.PhoneService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,5 +69,15 @@ public class PhoneServiceImpl implements PhoneService {
         phoneEntity.setType(updatePhone.getType());
         phoneEntity.setDescription(updatePhone.getDescription());
         phoneDao.update(phoneEntity);
+    }
+
+    public List<PhoneDto> getByContactId(int id) {
+        List<PhoneEntity> phoneEntityList = phoneDao.getByContactId(id);
+        List<PhoneDto> phoneDtoList = new ArrayList<>();
+        for (PhoneEntity phone : phoneEntityList) {
+            PhoneDto phoneDto = new PhoneDto(phone);
+            phoneDtoList.add(phoneDto);
+        }
+        return phoneDtoList;
     }
 }

@@ -1,6 +1,5 @@
 package controller;
 
-import dto.ContactDto;
 import dto.RequestContactDto;
 import dto.SearchContactDto;
 import exceptions.EntityNotFoundException;
@@ -43,23 +42,20 @@ public class ContactController {
     @PostMapping("/find")
     public ContactListResponse findBy(@RequestParam int size, @RequestParam int number,
                                       @Valid @RequestBody SearchContactDto searchContactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
-        if (bindingResult.getErrorCount() > 0) {
-            FieldError fieldError = bindingResult.getFieldErrors().get(0);
-            throw new ViolationErrorCustom(fieldError.getDefaultMessage());
-        }
+        checkValidation(bindingResult);
         return contactService.findBy(size, number, searchContactDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) throws EntityNotFoundException {
-        ContactDto contactDto = contactService.getById(id);
-        return new ResponseEntity<>(contactDto, HttpStatus.OK);
+        RequestContactDto requestContactDto = contactService.getById(id);
+        return new ResponseEntity<>(requestContactDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public int createContact(@Valid @RequestBody ContactDto contactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
+    public int createContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException, EntityNotFoundException {
         checkValidation(bindingResult);
-        return contactService.createNewContact(contactDto);
+        return contactService.createNewContact(requestContactDto);
     }
 
     @DeleteMapping("/{id}")
@@ -69,7 +65,7 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult, @PathVariable int id) throws EntityNotFoundException, ViolationErrorCustom {
+    public ResponseEntity<?> updateContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult, @PathVariable int id) throws EntityNotFoundException, ViolationErrorCustom, ParseException {
         checkValidation(bindingResult);
         contactService.updateContact(requestContactDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

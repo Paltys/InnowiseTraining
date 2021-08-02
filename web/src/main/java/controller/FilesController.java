@@ -27,13 +27,12 @@ public class FilesController {
     }
 
     @PostMapping
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) throws IOException {
-
-        String url = null;
+    public int uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) throws IOException {
+        int id=0;
         if (!file.isEmpty()) {
-            url = attachmentService.createNewAttachment(file, name);
+            return id = attachmentService.createNewAttachment(file, name);
         }
-        return url;
+        return 0;
     }
 
     @GetMapping("/{key}")
