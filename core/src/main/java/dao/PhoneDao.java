@@ -15,32 +15,57 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
 
     @Override
     public Serializable create(PhoneEntity obj) {
-        Session session = getSession();
-        Serializable id = session.save(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        Serializable id = null;
+        try {
+            session = getSession();
+            id = session.save(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return id;
     }
 
     @Override
     public void delete(PhoneEntity obj) {
-        Session session = getSession();
-        session.delete(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.delete(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
     }
 
     @Override
     public void update(PhoneEntity obj) {
-        Session session = getSession();
-        session.update(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.update(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
     }
-
 
     @Override
     public Optional<PhoneEntity> getById(int id) {
-        Session session = getSession();
-        PhoneEntity phoneEntity = session.get(PhoneEntity.class, id);
-        closeCurrentSession(session);
+        Session session = null;
+        PhoneEntity phoneEntity = null;
+        try {
+            session = getSession();
+            phoneEntity = session.get(PhoneEntity.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return Optional.ofNullable(phoneEntity);
     }
 
@@ -54,15 +79,20 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         return null;
     }
 
-
     public List<PhoneEntity> getByContactId(int id) {
         String sql = "FROM PhoneEntity where contactEntity.id =" + id;
-        Session session = getSession();
-        List<PhoneEntity> list = session.createQuery(sql).list();
-        closeCurrentSession(session);
+        List<PhoneEntity> list = null;
+        Session session = null;
+        try {
+            session = getSession();
+            list = session.createQuery(sql).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return list;
     }
-
 
     @Override
     public int count() {

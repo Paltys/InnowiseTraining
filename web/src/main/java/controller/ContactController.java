@@ -4,6 +4,8 @@ import dto.RequestContactDto;
 import dto.SearchContactDto;
 import exceptions.EntityNotFoundException;
 import exceptions.ViolationErrorCustom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,6 +36,8 @@ public class ContactController {
         this.contactService = contactService;
     }
 
+    Logger logger = LoggerFactory.getLogger(Logger.class);
+
     @GetMapping
     public ContactListResponse retrieveList(@RequestParam int size, @RequestParam int number) {
         return contactService.getAllContact(size, number);
@@ -50,6 +54,7 @@ public class ContactController {
     @GetMapping("/{id}")
     public ResponseEntity<?> retrieveById(@PathVariable int id) throws EntityNotFoundException {
         RequestContactDto requestContactDto = contactService.getById(id);
+        logger.info("logger start");
         return new ResponseEntity<>(requestContactDto, HttpStatus.OK);
     }
 
