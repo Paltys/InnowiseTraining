@@ -52,11 +52,12 @@ public class PhoneEntity implements Serializable {
     }
 
     public PhoneEntity(PhoneDto phoneDto, ContactEntity entity) {
-    countryCode = phoneDto.getCountryCode();
-    operatorCode = phoneDto.getOperatorCode();
-    phone = phoneDto.getPhone();
-    type = phoneDto.getType();
-    description = phoneDto.getDescription();
-    contactEntity = entity;
+        id = phoneDto.getId();
+        countryCode = phoneDto.getCountryCode();
+        operatorCode = phoneDto.getOperatorCode();
+        phone = phoneDto.getPhone();
+        type = phoneDto.getType();
+        description = phoneDto.getDescription();
+        contactEntity = entity;
     }
 }

@@ -14,32 +14,58 @@ public class AttachmentDao extends AbstractDao<AttachmentEntity> {
 
     @Override
     public Serializable create(AttachmentEntity obj) {
-        Session session = getSession();
-        Serializable id = session.save(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        Serializable id = null;
+        try {
+            session = getSession();
+            id = session.save(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return id;
     }
 
     @Override
     public void delete(AttachmentEntity obj) {
-        Session session = getSession();
-        session.delete(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.delete(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
     }
 
     @Override
     public void update(AttachmentEntity obj) {
-        Session session = getSession();
-        session.update(obj);
-        closeCurrentSession(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.update(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
     }
 
 
     @Override
     public Optional<AttachmentEntity> getById(int id) {
-        Session session = getSession();
-        AttachmentEntity attachmentEntity = session.get(AttachmentEntity.class, id);
-        closeCurrentSession(session);
+        Session session = null;
+        AttachmentEntity attachmentEntity = null;
+        try {
+            session = getSession();
+            attachmentEntity = session.get(AttachmentEntity.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return Optional.ofNullable(attachmentEntity);
     }
 
@@ -66,10 +92,17 @@ public class AttachmentDao extends AbstractDao<AttachmentEntity> {
     @Override
     public List<AttachmentEntity> getByContactId(int id) {
         String contactId = "contact_" + id;
-        String sql = "FROM AttachmentEntity A  WHERE A.type=" +"'"+contactId+ "'";
-        Session session = getSession();
-        List<AttachmentEntity> list = session.createQuery(sql).list();
-        closeCurrentSession(session);
+        String sql = "FROM AttachmentEntity A  WHERE A.type=" + "'" + contactId + "'";
+        Session session = null;
+        List<AttachmentEntity> list = null;
+        try {
+            session = getSession();
+            list = session.createQuery(sql).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeCurrentSession(session);
+        }
         return list;
     }
 }

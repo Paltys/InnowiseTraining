@@ -26,6 +26,8 @@ public class HibernateUtil {
         if (session !=null){
             try (session) {
                 session.getTransaction().commit();
+            } catch (Exception e){
+                session.getTransaction().rollback();
             }
         }
     }
