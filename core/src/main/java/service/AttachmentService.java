@@ -13,7 +13,7 @@ public interface AttachmentService {
 
     AttachmentDto getById(int id);
 
-    int createNewAttachment(MultipartFile file, String name) throws IOException;
+    String createAttachment(MultipartFile file, String name) throws IOException;
 
     void deleteAttachment(int id) throws EntityNotFoundException;
 

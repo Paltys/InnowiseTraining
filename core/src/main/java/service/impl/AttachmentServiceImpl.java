@@ -46,7 +46,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public int createNewAttachment(MultipartFile file, String name) throws IOException {
+    public String createAttachment(MultipartFile file, String name) throws IOException {
 
         String fileName;
 
@@ -65,10 +65,10 @@ public class AttachmentServiceImpl implements AttachmentService {
             String urlUploadFile = fileHost + apiPath + generatedFileName;
             Files.copy(file.getInputStream(), Paths.get(fullPath), StandardCopyOption.REPLACE_EXISTING);
             AttachmentEntity attachmentEntity = new AttachmentEntity(fileName, urlUploadFile);
-
-            return (int) attachmentDao.create(attachmentEntity);
+            attachmentDao.create(attachmentEntity);
+            return urlUploadFile;
         } else {
-            return 0;
+            return "File is empty";
         }
     }
 

@@ -11,11 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhoneDto {
-    @NotNull(message = "id cannot be null")
-    @Length(message = "id should not be greater than 2147483647" )
     private int id;
-    @NotNull(message = "id cannot be null")
-    @Length(message = "contact id should not be greater than 2147483647" )
     private int idContact;
     @Length(max = 50, message = "countryCode should not be greater than 50")
     private String countryCode;

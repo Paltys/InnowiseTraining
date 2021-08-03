@@ -47,29 +47,29 @@ public class RequestContactDto {
     private String flat;
     @Length(max = 50, message = "addressIndex should not be greater than 50")
     private String addressIndex;
-    @Length(max = 200, message = "avatarUrl should not be greater than 50")
+    @Length(max = 200, message = "avatarUrl should not be greater than 200")
     private String avatarUrl;
     private List<PhoneDto> phoneDto;
     private List<AttachmentDto> attachmentDto;
 
     public RequestContactDto(ContactDto contactDto, List<AttachmentDto> attachmentDtoList, List<PhoneDto> phoneDtoList) {
-        this.id = contactDto.getId();
-        this.firstName = contactDto.getFirstName();
-        this.lastName = contactDto.getLastName();
-        this.middleName = contactDto.getMiddleName();
-        this.birthday = contactDto.getBirthday();
-        this.gender = contactDto.getGender();
-        this.citizenship = contactDto.getCitizenship();
-        this.maritalStatus = contactDto.getMaritalStatus();
-        this.website = contactDto.getWebsite();
-        this.email = contactDto.getEmail();
-        this.workplace = contactDto.getWorkplace();
-        this.country = contactDto.getCountry();
-        this.town = contactDto.getTown();
-        this.street = contactDto.getStreet();
-        this.house = contactDto.getHouse();
-        this.flat = contactDto.getFlat();
-        this.addressIndex = contactDto.getAddressIndex();
+        id = contactDto.getId();
+        firstName = contactDto.getFirstName();
+        lastName = contactDto.getLastName();
+        middleName = contactDto.getMiddleName();
+        birthday = contactDto.getBirthday();
+        gender = contactDto.getGender();
+        citizenship = contactDto.getCitizenship();
+        maritalStatus = contactDto.getMaritalStatus();
+        website = contactDto.getWebsite();
+        email = contactDto.getEmail();
+        workplace = contactDto.getWorkplace();
+        country = contactDto.getCountry();
+        town = contactDto.getTown();
+        street = contactDto.getStreet();
+        house = contactDto.getHouse();
+        flat = contactDto.getFlat();
+        addressIndex = contactDto.getAddressIndex();
         attachmentDto = attachmentDtoList;
         phoneDto = phoneDtoList;
     }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.Instant;
 
@@ -15,8 +14,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AttachmentDto {
-    @NotNull(message = "id cannot be null")
-    @Length(message = "id should not be greater than 2147483647")
     private int id;
     @Length(max = 255, message = "name attachment should not be greater than 50")
     private String name;

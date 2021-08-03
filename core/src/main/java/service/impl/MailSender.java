@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -41,8 +40,6 @@ public class MailSender {
             mimeMessage.setSentDate(new Date());
             transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
 
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }

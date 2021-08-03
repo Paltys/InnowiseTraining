@@ -6,19 +6,17 @@ import dto.ContactDto;
 import dto.PhoneDto;
 import dto.RequestContactDto;
 import dto.SearchContactDto;
-import entity.AttachmentEntity;
 import entity.ContactAddressEmbeddable;
 import entity.ContactEntity;
 import entity.PhoneEntity;
-import entity.PhoneType;
 import exceptions.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.AttachmentService;
 import service.ContactService;
 import service.response.ContactListResponse;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,15 +28,15 @@ public class ContactServiceImpl implements ContactService {
 
     private final Dao<ContactEntity> contactDao;
     private final Dao<PhoneEntity> phoneDao;
-    private final Dao<AttachmentEntity> attachmentDao;
     private final AttachmentService attachmentService;
     private final PhoneServiceImpl phoneService;
 
-
-    public ContactServiceImpl(Dao<ContactEntity> contactDao, Dao<PhoneEntity> phoneDao, Dao<AttachmentEntity> attachmentDao, AttachmentServiceImpl attachmentService, PhoneServiceImpl phoneService) {
+    @Autowired
+    public ContactServiceImpl(Dao<ContactEntity> contactDao, Dao<PhoneEntity> phoneDao,
+                              AttachmentServiceImpl attachmentService,
+                              PhoneServiceImpl phoneService) {
         this.contactDao = contactDao;
         this.phoneDao = phoneDao;
-        this.attachmentDao = attachmentDao;
         this.attachmentService = attachmentService;
         this.phoneService = phoneService;
     }
@@ -68,26 +66,12 @@ public class ContactServiceImpl implements ContactService {
         List<AttachmentDto> attachmentDto = attachmentService.getByContactId(id);
         List<PhoneDto> phoneDto = phoneService.getByContactId(id);
 
-        RequestContactDto requestContactDto = new RequestContactDto(contactDto, attachmentDto, phoneDto);
-        return requestContactDto;
+        return new RequestContactDto(contactDto, attachmentDto, phoneDto);
     }
 
-    public int createNewContact(RequestContactDto requestContactDto) throws ParseException, EntityNotFoundException {
-        ContactEntity contactEntity = new ContactEntity();
-        ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(
-                requestContactDto.getCountry(), requestContactDto.getTown(), requestContactDto.getStreet(), requestContactDto.getHouse(), requestContactDto.getFlat(), requestContactDto.getAddressIndex());
-        contactEntity.setFirstName(requestContactDto.getFirstName());
-        contactEntity.setLastName(requestContactDto.getLastName());
-        contactEntity.setMiddleName(requestContactDto.getMiddleName());
-        contactEntity.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(requestContactDto.getBirthday()).toInstant());
-        contactEntity.setGender(requestContactDto.getGender());
-        contactEntity.setCitizenship(requestContactDto.getCitizenship());
-        contactEntity.setMaritalStatus(requestContactDto.getMaritalStatus());
-        contactEntity.setWebsite(requestContactDto.getWebsite());
-        contactEntity.setEmail(requestContactDto.getEmail());
-        contactEntity.setWorkplace(requestContactDto.getWorkplace());
-        contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
-        contactEntity.setAvatarUrl(requestContactDto.getAvatarUrl());
+    public int createContact(RequestContactDto requestContactDto) throws ParseException, EntityNotFoundException {
+        ContactAddressEmbeddable addressEmbeddable = new ContactAddressEmbeddable(requestContactDto);
+        ContactEntity contactEntity = new ContactEntity(requestContactDto,addressEmbeddable);
         int contactId = (int) contactDao.create(contactEntity);
 
         if (requestContactDto.getAttachmentDto() != null) {
@@ -98,13 +82,7 @@ public class ContactServiceImpl implements ContactService {
 
         if (requestContactDto.getPhoneDto() != null) {
             for (PhoneDto phone : requestContactDto.getPhoneDto()) {
-                PhoneEntity phoneEntity = new PhoneEntity();
-                phoneEntity.setCountryCode(phone.getCountryCode());
-                phoneEntity.setOperatorCode(phone.getOperatorCode());
-                phoneEntity.setPhone(phone.getPhone());
-                phoneEntity.setType(PhoneType.valueOf(phone.getType().toString()));
-                phoneEntity.setDescription(phone.getDescription());
-                phoneEntity.setContactEntity(contactEntity);
+                PhoneEntity phoneEntity = new PhoneEntity(phone, contactEntity);
                 phoneDao.create(phoneEntity);
             }
         }
@@ -122,7 +100,8 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto) throws ParseException {
+    public ContactListResponse findBy(int size, int number, SearchContactDto searchContactDto)
+            throws ParseException {
         List<ContactEntity> contactList = contactDao.findBy(size, number, searchContactDto);
         List<ContactDto> contactDtoList = new LinkedList<>();
 
@@ -135,47 +114,22 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void updateContact(RequestContactDto requestContactDto, int id) throws EntityNotFoundException, ParseException {
-        ContactEntity contactEntity = new ContactEntity();
-        ContactAddressEmbeddable contactAddressEmbeddable = new ContactAddressEmbeddable(
-                requestContactDto.getCountry(), requestContactDto.getTown(), requestContactDto.getStreet(), requestContactDto.getHouse(), requestContactDto.getFlat(), requestContactDto.getAddressIndex());
-        contactEntity.setFirstName(requestContactDto.getFirstName());
-        contactEntity.setLastName(requestContactDto.getLastName());
-        contactEntity.setMiddleName(requestContactDto.getMiddleName());
-        contactEntity.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(requestContactDto.getBirthday()).toInstant());
-        contactEntity.setGender(requestContactDto.getGender());
-        contactEntity.setCitizenship(requestContactDto.getCitizenship());
-        contactEntity.setMaritalStatus(requestContactDto.getMaritalStatus());
-        contactEntity.setWebsite(requestContactDto.getWebsite());
-        contactEntity.setEmail(requestContactDto.getEmail());
-        contactEntity.setWorkplace(requestContactDto.getWorkplace());
-        contactEntity.setContactAddressEmbeddable(contactAddressEmbeddable);
-        contactEntity.setAvatarUrl(requestContactDto.getAvatarUrl());
+    public void updateContact(RequestContactDto requestContactDto, int id)
+            throws EntityNotFoundException, ParseException {
+        ContactAddressEmbeddable addressEmbeddable = new ContactAddressEmbeddable(requestContactDto);
+        ContactEntity contactEntity = new ContactEntity(requestContactDto,addressEmbeddable);
+        contactEntity.setId(id);
         contactDao.update(contactEntity);
 
-        List<PhoneEntity> listPhone = getPhoneEntity(requestContactDto);
-        for (PhoneEntity phoneEntity : listPhone) {
-            phoneDao.update(phoneEntity);
+        if (requestContactDto.getPhoneDto() != null) {
+            for (PhoneDto phone : requestContactDto.getPhoneDto()) {
+                PhoneEntity phoneEntity = new PhoneEntity(phone, contactEntity);
+                phoneDao.update(phoneEntity);
+            }
         }
 
         for (AttachmentDto attachment : requestContactDto.getAttachmentDto()) {
             attachmentService.updateAttachment(attachment, id);
         }
-    }
-
-    private List<PhoneEntity> getPhoneEntity(RequestContactDto requestContactDto) {
-        List<PhoneEntity> phoneList = new ArrayList<>();
-
-        for (PhoneDto phone : requestContactDto.getPhoneDto()) {
-            PhoneEntity phoneEntity = new PhoneEntity();
-            phoneEntity.setCountryCode(phone.getCountryCode());
-            phoneEntity.setOperatorCode(phone.getOperatorCode());
-            phoneEntity.setPhone(phone.getPhone());
-            phoneEntity.setType(PhoneType.valueOf(phone.toString()));
-            phoneEntity.setDescription(phone.getDescription());
-            phoneDao.create(phoneEntity);
-            phoneList.add(phoneEntity);
-        }
-        return phoneList;
     }
 }

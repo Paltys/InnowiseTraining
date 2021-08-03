@@ -14,7 +14,7 @@ public interface ContactService {
 
     RequestContactDto getById(int id) throws EntityNotFoundException;
 
-    int createNewContact(RequestContactDto obj) throws ParseException, EntityNotFoundException;
+    int createContact(RequestContactDto obj) throws ParseException, EntityNotFoundException;
 
     void deleteContact(int id) throws EntityNotFoundException;
 

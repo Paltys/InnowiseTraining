@@ -1,5 +1,6 @@
 package entity;
 
+import dto.RequestContactDto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -60,23 +63,42 @@ public class ContactEntity implements Serializable {
     @Column(name = "email", length = 50)
     private String email;
 
-    @Column(name = "workplace", length = 100)
+    @Column(name = "workplace", length = 200)
     private String workplace;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="country",column = @Column(name ="country")),
-            @AttributeOverride(name="town",column = @Column(name ="town")),
-            @AttributeOverride(name="street",column = @Column(name ="street")),
-            @AttributeOverride(name="house",column = @Column(name ="house")),
-            @AttributeOverride(name="flat",column = @Column(name ="flat")),
-            @AttributeOverride(name="addressIndex",column = @Column(name ="addressIndex")),
+            @AttributeOverride(name = "country", column = @Column(name = "country")),
+            @AttributeOverride(name = "town", column = @Column(name = "town")),
+            @AttributeOverride(name = "street", column = @Column(name = "street")),
+            @AttributeOverride(name = "house", column = @Column(name = "house")),
+            @AttributeOverride(name = "flat", column = @Column(name = "flat")),
+            @AttributeOverride(name = "addressIndex", column = @Column(name = "addressIndex")),
     })
     private ContactAddressEmbeddable contactAddressEmbeddable;
 
-    @OneToMany(mappedBy = "contactEntity",cascade = CascadeType.ALL )
+    @OneToMany(mappedBy = "contactEntity", cascade = CascadeType.ALL)
     private Collection<PhoneEntity> phoneEntity;
 
-    @Column(name="avatar_url", length = 100)
+    @Column(name = "avatar_url", length = 100)
     private String avatarUrl;
+
+    public ContactEntity(RequestContactDto req, ContactAddressEmbeddable addressEmbeddable)
+            throws ParseException {
+        firstName = req.getFirstName();
+        lastName = req.getLastName();
+        middleName = req.getMiddleName();
+        birthday = new SimpleDateFormat("yyyy-MM-dd").parse(req.getBirthday()).toInstant();
+        gender = req.getGender();
+        citizenship = req.getCitizenship();
+        maritalStatus = req.getMaritalStatus();
+        website = req.getWebsite();
+        workplace = req.getWorkplace();
+        contactAddressEmbeddable=addressEmbeddable;
+        avatarUrl = req.getAvatarUrl();
+    }
+
+    public ContactEntity() {
+    }
 }
+

@@ -41,7 +41,8 @@ public class ContactController {
 
     @PostMapping("/find")
     public ContactListResponse findBy(@RequestParam int size, @RequestParam int number,
-                                      @Valid @RequestBody SearchContactDto searchContactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
+                                      @Valid @RequestBody SearchContactDto searchContactDto,
+                                      BindingResult bindingResult) throws ViolationErrorCustom, ParseException {
         checkValidation(bindingResult);
         return contactService.findBy(size, number, searchContactDto);
     }
@@ -53,9 +54,10 @@ public class ContactController {
     }
 
     @PostMapping
-    public int createContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult) throws ViolationErrorCustom, ParseException, EntityNotFoundException {
+    public int createContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult)
+            throws ViolationErrorCustom, ParseException, EntityNotFoundException {
         checkValidation(bindingResult);
-        return contactService.createNewContact(requestContactDto);
+        return contactService.createContact(requestContactDto);
     }
 
     @DeleteMapping("/{id}")
@@ -65,7 +67,9 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult, @PathVariable int id) throws EntityNotFoundException, ViolationErrorCustom, ParseException {
+    public ResponseEntity<?> updateContact(@Valid @RequestBody RequestContactDto requestContactDto,
+                                           BindingResult bindingResult, @PathVariable int id)
+            throws EntityNotFoundException, ViolationErrorCustom, ParseException {
         checkValidation(bindingResult);
         contactService.updateContact(requestContactDto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
