@@ -34,16 +34,16 @@ public class MailSheduler {
     @Scheduled(cron = "0 0 23 * * *")
     public void scheduleSendMail() {
         LocalDate date = LocalDate.now();
-        int mounth = date.getMonthValue();
+        int month = date.getMonthValue();
         int day = date.getDayOfMonth();
         List<ContactEntity> contactList = contactDao.getAll(20, 0);
         for (ContactEntity contact : contactList) {
             if (contact.getBirthday() != null && contact.getEmail() != null) continue;
             int birtdayMounth = LocalDate.ofInstant(contact.getBirthday(), ZoneId.systemDefault()).getMonthValue();
             int birthdayDay = LocalDate.ofInstant(contact.getBirthday(), ZoneId.systemDefault()).getDayOfMonth();
-            if (birtdayMounth == mounth && birthdayDay == day) {
-                mailSender.sendMail(contact.getEmail(), "HappyBirthday ", "Happy birthday" + contact.getFirstName() + " "
-                        + contact.getLastName());
+            if (birtdayMounth == month && birthdayDay == day) {
+                mailSender.sendMail(contact.getEmail(), "HappyBirthday ", "Happy birthday"
+                        + contact.getFirstName() + " " + contact.getLastName());
             }
         }
     }

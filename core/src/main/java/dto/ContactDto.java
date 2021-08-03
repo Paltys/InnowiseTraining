@@ -49,7 +49,7 @@ public class ContactDto {
     private String flat;
     @Length(max = 50, message = "addressIndex should not be greater than 50")
     private String addressIndex;
-    @Length(max = 50, message = "avatarUrl should not be greater than 50")
+    @Length(max = 200, message = "avatarUrl should not be greater than 200")
     private String avatarUrl;
 
     public ContactDto(ContactEntity contact) {
@@ -57,7 +57,11 @@ public class ContactDto {
         firstName = contact.getFirstName();
         lastName = contact.getLastName();
         middleName = contact.getMiddleName();
+        if(contact.getBirthday()!=null){
         birthday = LocalDate.ofInstant(contact.getBirthday(),ZoneId.systemDefault()).toString();
+        }else{
+            birthday =null;
+        }
         gender = contact.getGender();
         citizenship = contact.getCitizenship();
         maritalStatus = contact.getMaritalStatus();

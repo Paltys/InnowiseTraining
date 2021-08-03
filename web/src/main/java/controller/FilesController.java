@@ -2,6 +2,7 @@ package controller;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,19 +22,15 @@ import java.io.IOException;
 public class FilesController {
 
     private final AttachmentService attachmentService;
-
+    @Autowired
     public FilesController(AttachmentService attachmentService) {
         this.attachmentService = attachmentService;
     }
 
     @PostMapping
-    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) throws IOException {
-
-        String url = null;
-        if (!file.isEmpty()) {
-            url = attachmentService.createNewAttachment(file, name);
-        }
-        return url;
+    public String uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String name)
+            throws IOException {
+            return  attachmentService.createAttachment(file, name);
     }
 
     @GetMapping("/{key}")

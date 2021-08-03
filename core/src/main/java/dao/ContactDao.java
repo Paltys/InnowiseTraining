@@ -54,11 +54,9 @@ public class ContactDao extends AbstractDao<ContactEntity> {
 
     @Override
     public List<ContactEntity> getAll(int size, int number) {
-        int maxResult = size;
-        int startCount = number * size;
         String sql = "FROM ContactEntity";
         Session session = getSession();
-        List<ContactEntity> list = session.createQuery(sql).setMaxResults(maxResult).setFirstResult(startCount).list();
+        List<ContactEntity> list = session.createQuery(sql).setMaxResults(size).setFirstResult(number * size).list();
         closeCurrentSession(session);
         return list;
     }
@@ -71,12 +69,17 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         return list;
     }
 
+    @Override
+    public List<ContactEntity> getByContactId(int id) {
+        return null;
+    }
+
     public int count() {
         String sql = "FROM ContactEntity";
         Session session = getSession();
-        int allsize = session.createQuery(sql).list().size();
+        int allSize = session.createQuery(sql).list().size();
         closeCurrentSession(session);
-        return allsize;
+        return allSize;
     }
 
     public List<ContactEntity> findBy(int size, int number, SearchContactDto searchContactDto) throws ParseException {

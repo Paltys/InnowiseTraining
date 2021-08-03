@@ -24,10 +24,8 @@ public class HibernateUtil {
 
     public static  void closeSession(Session session){
         if (session !=null){
-            try{
+            try (session) {
                 session.getTransaction().commit();
-            }finally {
-                session.close();
             }
         }
     }

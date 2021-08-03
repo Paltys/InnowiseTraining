@@ -62,4 +62,14 @@ public class AttachmentDao extends AbstractDao<AttachmentEntity> {
     public List<AttachmentEntity> findBy(int count, int page, SearchContactDto searchContactDto) {
         return null;
     }
+
+    @Override
+    public List<AttachmentEntity> getByContactId(int id) {
+        String contactId = "contact_" + id;
+        String sql = "FROM AttachmentEntity A  WHERE A.type=" +"'"+contactId+ "'";
+        Session session = getSession();
+        List<AttachmentEntity> list = session.createQuery(sql).list();
+        closeCurrentSession(session);
+        return list;
+    }
 }

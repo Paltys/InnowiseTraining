@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PhoneDao extends AbstractDao<PhoneEntity>{
+public class PhoneDao extends AbstractDao<PhoneEntity> {
 
     @Override
     public Serializable create(PhoneEntity obj) {
         Session session = getSession();
-        Serializable id=session.save(obj);
+        Serializable id = session.save(obj);
         closeCurrentSession(session);
         return id;
     }
@@ -53,6 +53,16 @@ public class PhoneDao extends AbstractDao<PhoneEntity>{
     public List<PhoneEntity> getAll() {
         return null;
     }
+
+
+    public List<PhoneEntity> getByContactId(int id) {
+        String sql = "FROM PhoneEntity where contactEntity.id =" + id;
+        Session session = getSession();
+        List<PhoneEntity> list = session.createQuery(sql).list();
+        closeCurrentSession(session);
+        return list;
+    }
+
 
     @Override
     public int count() {
