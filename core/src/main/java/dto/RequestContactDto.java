@@ -22,7 +22,7 @@ public class RequestContactDto {
     @NotBlank(message = "lastName cannot be null")
     @Length(max = 50, message = "last name should not be greater than 50")
     private String lastName;
-    @Length(max = 50, message = "middle name should not be greater than 50")
+//    @Length(max = 50, message = "middle name should not be greater than 50")
     private String middleName;
     private String birthday;
     private Gender gender;

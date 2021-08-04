@@ -69,11 +69,10 @@ public class ContactServiceImpl implements ContactService {
         return new RequestContactDto(contactDto, attachmentDto, phoneDto);
     }
 
-    public int createContact(RequestContactDto requestContactDto) throws ParseException, EntityNotFoundException {
+    public int createContact(RequestContactDto requestContactDto) throws ParseException, EntityNotFoundException ,NullPointerException{
         ContactAddressEmbeddable addressEmbeddable = new ContactAddressEmbeddable(requestContactDto);
-        ContactEntity contactEntity = new ContactEntity(requestContactDto,addressEmbeddable);
+        ContactEntity contactEntity = new ContactEntity(requestContactDto, addressEmbeddable);
         int contactId = (int) contactDao.create(contactEntity);
-
         if (requestContactDto.getAttachmentDto() != null) {
             for (AttachmentDto attachment : requestContactDto.getAttachmentDto()) {
                 attachmentService.updateAttachment(attachment, contactId);
@@ -117,7 +116,7 @@ public class ContactServiceImpl implements ContactService {
     public void updateContact(RequestContactDto requestContactDto, int id)
             throws EntityNotFoundException, ParseException {
         ContactAddressEmbeddable addressEmbeddable = new ContactAddressEmbeddable(requestContactDto);
-        ContactEntity contactEntity = new ContactEntity(requestContactDto,addressEmbeddable);
+        ContactEntity contactEntity = new ContactEntity(requestContactDto, addressEmbeddable);
         contactEntity.setId(id);
         contactDao.update(contactEntity);
 

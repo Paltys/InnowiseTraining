@@ -36,7 +36,7 @@ public class ContactController {
         this.contactService = contactService;
     }
 
-    Logger logger = LoggerFactory.getLogger(Logger.class);
+    Logger logger = LoggerFactory.getLogger(ContactController.class);
 
     @GetMapping
     public ContactListResponse retrieveList(@RequestParam int size, @RequestParam int number) {
@@ -60,7 +60,7 @@ public class ContactController {
 
     @PostMapping
     public int createContact(@Valid @RequestBody RequestContactDto requestContactDto, BindingResult bindingResult)
-            throws ViolationErrorCustom, ParseException, EntityNotFoundException {
+            throws ViolationErrorCustom, ParseException, EntityNotFoundException, NullPointerException {
         checkValidation(bindingResult);
         return contactService.createContact(requestContactDto);
     }

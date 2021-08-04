@@ -15,24 +15,18 @@ import java.io.IOException;
 @ControllerAdvice()
 class ExceptionController extends ResponseEntityExceptionHandler {
 
-//    @ExceptionHandler(value = RuntimeException.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse responseException(Exception e) {
-//        return new ErrorResponse(500, e.getMessage());
-//    }
-//
-//    @ExceptionHandler(value = IOException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse responseException(IOException e) {
-//        return new ErrorResponse(500, e.getMessage());
-//
-//    }
-//
-//    @ExceptionHandler(value = EntityNotFoundException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ErrorResponse responseException(EntityNotFoundException e) {
-//        return new ErrorResponse(404, e.getMessage());
-//    }
+    @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorResponse responseException(Exception e) {
+        return new ErrorResponse(500, "Internal server error");
+    }
+
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse responseException(EntityNotFoundException e) {
+        return new ErrorResponse(404, e.getMessage());
+    }
 
     @ExceptionHandler(value=ViolationErrorCustom.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

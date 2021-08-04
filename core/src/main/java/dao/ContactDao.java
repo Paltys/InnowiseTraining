@@ -29,8 +29,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             contactEntity = session.get(ContactEntity.class, id);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -44,8 +46,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             id = session.save(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -58,8 +62,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             session.delete(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -71,8 +77,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             session.update(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -86,8 +94,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             list = session.createQuery(sql).setMaxResults(size).setFirstResult(number * size).list();
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -101,8 +111,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             list = session.createQuery(sql).list();
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -121,8 +133,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         try {
             session = getSession();
             allSize = session.createQuery(sql).list().size();
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -143,8 +157,10 @@ public class ContactDao extends AbstractDao<ContactEntity> {
             criteriaQuery.select(rootContact).where(criteriaBuilder.and(predicateList.toArray(new Predicate[0])));
             Query query = session.createQuery(criteriaQuery).setMaxResults(size).setFirstResult(number * size);
             result = query.getResultList();
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -191,10 +207,5 @@ public class ContactDao extends AbstractDao<ContactEntity> {
         else if (searchContactDto.getAvatarUrl() != null)
             allPredicates.add(criteriaBuilder.equal(rootContact.get("avatarUrl"), searchContactDto.getSearchAvatarUrl()));
         return allPredicates;
-    }
-
-    @Override
-    public void closeCurrentSession(Session session) {
-        super.closeCurrentSession(session);
     }
 }

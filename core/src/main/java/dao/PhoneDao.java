@@ -20,8 +20,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         try {
             session = getSession();
             id = session.save(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -34,8 +36,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         try {
             session = getSession();
             session.delete(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -47,8 +51,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         try {
             session = getSession();
             session.update(obj);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -61,8 +67,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         try {
             session = getSession();
             phoneEntity = session.get(PhoneEntity.class, id);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
@@ -86,8 +94,10 @@ public class PhoneDao extends AbstractDao<PhoneEntity> {
         try {
             session = getSession();
             list = session.createQuery(sql).list();
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         } finally {
             closeCurrentSession(session);
         }
